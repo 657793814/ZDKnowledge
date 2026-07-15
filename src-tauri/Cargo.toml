@@ -1,7 +1,7 @@
 [package]
-name = "mathverse"
+name = "knowledgepower"
 version = "0.1.0"
-description = "数理世界 - 初中高中数学知识图谱平台"
+description = "知识动力 - 初中高中数学知识图谱平台"
 authors = ["zuodong"]
 license = "MIT"
 repository = ""

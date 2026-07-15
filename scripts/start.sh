@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# MathVerse 一键启动
+# KnowledgePower 一键启动
 # 编译后端 → 启动后端 → 启动前端开发服务器
 # ============================================================
 set -euo pipefail
@@ -28,12 +28,12 @@ trap cleanup SIGINT SIGTERM
 
 # ---------- Step 1: 编译后端 ----------
 info "========== 1/3 编译后端 =========="
-JAR=$(ls "$SERVER_DIR/target/mathverse-server-*.jar" 2>/dev/null | head -1)
+JAR=$(ls "$SERVER_DIR/target/knowledgepower-server-*.jar" 2>/dev/null | head -1)
 if [ -z "$JAR" ]; then
     info "JAR 不存在，执行编译..."
     cd "$SERVER_DIR"
     mvn clean package -DskipTests -q
-    JAR=$(ls target/mathverse-server-*.jar | head -1)
+    JAR=$(ls target/knowledgepower-server-*.jar | head -1)
     info "编译完成 ✅"
 else
     info "使用已有 JAR: $(basename "$JAR")"
@@ -75,7 +75,7 @@ info "前端 PID: $FRONTEND_PID"
 # ---------- 完成 ----------
 echo ""
 echo -e "${GREEN}====================================${NC}"
-echo -e "${GREEN}  MathVerse 已启动 🎉${NC}"
+echo -e "${GREEN}  KnowledgePower 已启动 🎉${NC}"
 echo -e "${GREEN}====================================${NC}"
 echo -e "  前端: ${YELLOW}http://localhost:8082${NC}"
 echo -e "  后端: ${YELLOW}http://localhost:8080${NC}"

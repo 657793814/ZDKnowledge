@@ -1,5 +1,5 @@
 /**
- * MathVerse 种子数据 — 共享工具函数
+ * KnowledgePower 种子数据 — 共享工具函数
  */
 import { PrismaClient } from '@prisma/client';
 

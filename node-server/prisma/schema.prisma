@@ -1,4 +1,4 @@
-// Prisma Schema — MathVerse Node Server
+// Prisma Schema — KnowledgePower Node Server
 // 完全对齐 Java 侧所有表结构，无物理外键，用逻辑字段维护关联
 
 generator client {

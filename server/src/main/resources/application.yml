@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mathverse-server
+    name: knowledgepower-server
   profiles:
     active: dev
 
@@ -22,7 +22,7 @@ mybatis-plus:
 # ====== 日志 ======
 logging:
   level:
-    com.mathverse: info
+    com.knowledgepower: info
 
 # ====== AI 配置 ======
 # 根据实际配置自行修改以下参数

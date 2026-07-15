@@ -1,10 +1,10 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: mathverse-mysql
+    container_name: knowledgepower-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mathverse
+      MYSQL_DATABASE: knowledgepower
     ports:
       - "3306:3306"
     volumes:
@@ -19,7 +19,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: mathverse-redis
+    container_name: knowledgepower-redis
     ports:
       - "6379:6379"
     volumes:

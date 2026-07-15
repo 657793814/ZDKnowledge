@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# MathVerse 打包脚本
+# KnowledgePower 打包脚本
 # 编译后端 JAR → 构建前端 → 打包 Tauri .app
 # ============================================================
 set -euo pipefail
@@ -32,13 +32,13 @@ info "Rust: $(cargo --version | head -1)"
 info "========== 1/4 编译后端 JAR =========="
 cd "$SERVER_DIR"
 mvn clean package -DskipTests -q
-JAR_FILE=$(ls target/mathverse-server-*.jar | head -1)
+JAR_FILE=$(ls target/knowledgepower-server-*.jar | head -1)
 info "后端 JAR: $(basename "$JAR_FILE") ($(du -h "$JAR_FILE" | cut -f1))"
 
 # 复制到 binary 目录（Tauri 会打包进去）
 mkdir -p "$BINARIES_DIR"
-cp "$JAR_FILE" "$BINARIES_DIR/mathverse-backend.jar"
-info "已复制到: $BINARIES_DIR/mathverse-backend.jar"
+cp "$JAR_FILE" "$BINARIES_DIR/knowledgepower-backend.jar"
+info "已复制到: $BINARIES_DIR/knowledgepower-backend.jar"
 
 # Step 2: 构建前端
 info "========== 2/4 构建前端 =========="
@@ -57,22 +57,22 @@ info "Tauri 编译完成 ✅"
 info "========== 4/4 收集产物 =========="
 echo ""
 echo -e "${GREEN}====================================${NC}"
-echo -e "${GREEN}  MathVerse 打包完成 🎉${NC}"
+echo -e "${GREEN}  KnowledgePower 打包完成 🎉${NC}"
 echo -e "${GREEN}====================================${NC}"
 echo ""
 
-if [ -f "target/release/bundle/macos/数理世界.app" ]; then
+if [ -f "target/release/bundle/macos/知识动力.app" ]; then
     echo -e "  ${GREEN}✅${NC} macOS .app:"
-    echo "     target/release/bundle/macos/数理世界.app"
-    echo "     ($(du -sh target/release/bundle/macos/数理世界.app | cut -f1))"
+    echo "     target/release/bundle/macos/知识动力.app"
+    echo "     ($(du -sh target/release/bundle/macos/知识动力.app | cut -f1))"
 fi
 
-if [ -f "target/release/bundle/dmg/数理世界.dmg" ]; then
+if [ -f "target/release/bundle/dmg/知识动力.dmg" ]; then
     echo -e "  ${GREEN}✅${NC} macOS .dmg:"
-    echo "     target/release/bundle/dmg/数理世界.dmg"
-    echo "     ($(du -sh target/release/bundle/dmg/数理世界.dmg | cut -f1))"
+    echo "     target/release/bundle/dmg/知识动力.dmg"
+    echo "     ($(du -sh target/release/bundle/dmg/知识动力.dmg | cut -f1))"
 fi
 
 echo ""
-echo -e "  ${YELLOW}后端 JAR:${NC} $BINARIES_DIR/mathverse-backend.jar"
+echo -e "  ${YELLOW}后端 JAR:${NC} $BINARIES_DIR/knowledgepower-backend.jar"
 echo ""

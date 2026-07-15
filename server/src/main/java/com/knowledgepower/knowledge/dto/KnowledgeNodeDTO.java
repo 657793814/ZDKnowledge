@@ -1,0 +1,22 @@
+package com.knowledgepower.knowledge.dto;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class KnowledgeNodeDTO {
+    private String id;
+    private String title;
+    private String subtitle;
+    private String domain;
+    private String subject;
+    private String level;
+    private Integer difficulty;
+    private Integer sortOrder;
+    private String visualType;
+    private String summary;
+    private String contentJson;
+    private String milestoneType;
+    private Integer status;
+}

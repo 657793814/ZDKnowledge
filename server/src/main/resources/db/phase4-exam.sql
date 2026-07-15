@@ -1,8 +1,8 @@
 -- ============================================
--- MathVerse Phase 4 — 训练考试系统
+-- KnowledgePower Phase 4 — 训练考试系统
 -- ============================================
 
-USE mathverse;
+USE knowledgepower;
 
 -- 题目表
 CREATE TABLE IF NOT EXISTS exam_question (

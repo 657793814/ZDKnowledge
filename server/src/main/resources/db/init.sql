@@ -1,10 +1,10 @@
 -- ============================================
--- MathVerse 数据库初始化
+-- KnowledgePower 数据库初始化
 -- ============================================
 
-CREATE DATABASE IF NOT EXISTS mathverse DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS knowledgepower DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE mathverse;
+USE knowledgepower;
 
 -- 知识点表
 CREATE TABLE IF NOT EXISTS knowledge_node (

@@ -8,7 +8,7 @@ dotenv.config();
 export const config = {
   port: parseInt(process.env.PORT || '3001', 10),
   database: {
-    url: process.env.DATABASE_URL || 'file:./prisma/mathverse.db',
+    url: process.env.DATABASE_URL || 'file:./prisma/knowledgepower.db',
   },
   ai: {
     provider: process.env.AI_PROVIDER || 'openai',

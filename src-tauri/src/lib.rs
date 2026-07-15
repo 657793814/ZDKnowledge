@@ -24,7 +24,7 @@ pub fn run() {
                     let jar_path = app
                         .path()
                         .resource_dir()
-                        .map(|p| p.join("binaries").join("mathverse-backend.jar"))
+                        .map(|p| p.join("binaries").join("knowledgepower-backend.jar"))
                         .unwrap_or_default();
 
                     if jar_path.exists() {

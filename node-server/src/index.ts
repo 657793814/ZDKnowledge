@@ -1,5 +1,5 @@
 /**
- * MathVerse Node Server — Express 入口
+ * KnowledgePower Node Server — Express 入口
  * 替代 Java Spring Boot 后端
  */
 import express from 'express';
@@ -64,7 +64,7 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 
 // 启动
 app.listen(config.port, () => {
-  console.log(`🧮 MathVerse Node Server 启动成功 → http://localhost:${config.port}`);
+  console.log(`🧮 KnowledgePower Node Server 启动成功 → http://localhost:${config.port}`);
 });
 
 // 优雅退出

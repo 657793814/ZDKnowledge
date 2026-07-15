@@ -4,7 +4,7 @@ import mysql from 'mysql2/promise';
 async function main() {
   const prisma = new PrismaClient();
   const conn = await mysql.createConnection({
-    host: '127.0.0.1', port: 3306, user: 'root', password: 'root1234', database: 'mathverse',
+    host: '127.0.0.1', port: 3306, user: 'root', password: 'root1234', database: 'knowledgepower',
     connectTimeout: 5000,
     charset: 'utf8mb4',
   });

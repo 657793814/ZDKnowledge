@@ -25,4 +25,4 @@ memory/
 # Rust / Tauri
 src-tauri/target/
 src-tauri/binaries/
-scripts/mathverse-backend.jar
+scripts/knowledgepower-backend.jar

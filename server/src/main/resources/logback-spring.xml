@@ -1,5 +1,5 @@
 <configuration>
-    <property name="APP_NAME" value="mathverse-server"/>
+    <property name="APP_NAME" value="knowledgepower-server"/>
     <property name="LOG_HOME" value="${user.dir}/logs/${APP_NAME}"/>
 
     <!-- 控制台输出（不含 %clr，避免 Logback 原生解析失败） -->

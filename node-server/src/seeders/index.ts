@@ -1,5 +1,5 @@
 /**
- * MathVerse 种子数据 — 入口
+ * KnowledgePower 种子数据 — 入口
  * 运行: npx tsx src/seeders/index.ts
  * 
  * 模块化架构：每个领域独立文件，导入此入口
@@ -36,7 +36,7 @@ import { seedChemistryCalculation } from './domains/chem-06-calculation.js';
 
 async function main() {
   console.log('========================================');
-  console.log('  MathVerse 种子数据初始化');
+  console.log('  KnowledgePower 种子数据初始化');
   console.log('========================================\n');
 
   // 检查是否已有数据

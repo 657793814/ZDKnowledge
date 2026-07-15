@@ -1,4 +1,4 @@
-# MathVerse 数理世界
+# KnowledgePower 知识动力
 
 📐 交互式数学知识图谱 + 训练系统 + AI 导师
 
@@ -11,7 +11,7 @@
 ```
 math-knowledge/
 ├── server/                    # 🟢 Java 后端 (Spring Boot + MySQL)
-│   └── src/main/java/com/mathverse/
+│   └── src/main/java/com/knowledgepower/
 │       ├── ai/                # AI 模块（问答、解析、推荐）
 │       ├── common/            # 公共组件（异常处理、统一响应）
 │       ├── config/            # 配置类（数据库、Redis、Swagger等）
@@ -76,7 +76,7 @@ math-knowledge/
 │                        桌面端 (Tauri v2)                            │
 │                     ┌───────────────────────┐                       │
 │                     │     前端 (React)       │                       │
-│                     │ 知识图谱可视化 + AI聊天 │                       │
+│                     │ 知识图谱可视化 + AI导师 │                       │
 │                     └───────────┬───────────┘                       │
 └─────────────────────────────────┼───────────────────────────────────┘
                                   │ HTTP/REST API
@@ -278,13 +278,13 @@ cd web && API_TARGET=http://localhost:3001 npm run dev
 docker compose -f /path/to/dockerProject/mysql-docker-compose.yml up -d
 
 # 建库
-mysql -h 127.0.0.1 -u root -p -e "CREATE DATABASE mathverse DEFAULT CHARSET utf8mb4"
-mysql -h 127.0.0.1 -u root -p mathverse < server/src/main/resources/db/init.sql
+mysql -h 127.0.0.1 -u root -p -e "CREATE DATABASE knowledgepower DEFAULT CHARSET utf8mb4"
+mysql -h 127.0.0.1 -u root -p knowledgepower < server/src/main/resources/db/init.sql
 ```
 
 ### Node.js 后端 (SQLite)
 
-数据库文件: `node-server/prisma/mathverse.db`
+数据库文件: `node-server/prisma/knowledgepower.db`
 
 ```bash
 # 初始化 (如果数据库不存在会自动创建并 seed)
@@ -308,7 +308,7 @@ npx prisma studio
 
 > **注意**：`contentJson` 字段存储的是 JSON 字符串，在 Prisma Studio 中需以 JSON 格式编辑。如需重新运行全部种子数据，需先清空数据库：
 > ```bash
-> cd node-server && rm -f prisma/mathverse.db
+> cd node-server && rm -f prisma/knowledgepower.db
 > npx prisma db push --skip-generate
 > npx tsx src/seeders/index.ts
 > ```

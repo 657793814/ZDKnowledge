@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# MathVerse 全平台打包脚本
+# KnowledgePower 全平台打包脚本
 # 一键：编译后端 → 构建前端 → 打包 Tauri .app/.dmg
 # 支持后端引擎切换:
 #   ./build.sh             —— 默认使用 Java (编译 JAR)
@@ -78,14 +78,14 @@ build_backend() {
         cp prisma/schema.prisma "$NODE_BUNDLE_DIR/"
         
         # 初始数据库（空，首次启动时自动 seed）
-        touch "$NODE_BUNDLE_DIR/prisma/mathverse.db"
+        touch "$NODE_BUNDLE_DIR/prisma/knowledgepower.db"
         
         info "Node.js 后端打包完成: $NODE_BUNDLE_DIR/server.js"
     else
         info "========== 1/4 编译后端 JAR =========="
         cd "$SERVER_DIR"
         mvn clean package -DskipTests -q
-    JAR_FILE=$(ls target/mathverse-server-*.jar 2>/dev/null | head -1)
+    JAR_FILE=$(ls target/knowledgepower-server-*.jar 2>/dev/null | head -1)
 
     if [ -z "$JAR_FILE" ]; then
         error "后端编译失败，未找到 JAR"
@@ -96,11 +96,11 @@ build_backend() {
 
     # 复制到 Tauri binaries 目录
     mkdir -p "$BINARIES_DIR"
-    cp "$JAR_FILE" "$BINARIES_DIR/mathverse-backend.jar"
+    cp "$JAR_FILE" "$BINARIES_DIR/knowledgepower-backend.jar"
     info "已复制到 binaries/"
 
     # 同时保留一份在 scripts 目录（方便开发调试）
-    cp "$JAR_FILE" "$SCRIPT_DIR/mathverse-backend.jar"
+    cp "$JAR_FILE" "$SCRIPT_DIR/knowledgepower-backend.jar"
     info "已复制到 scripts/（开发调试用）"
 }
 
@@ -128,11 +128,11 @@ start_backend_dev() {
     cd "$SERVER_DIR"
 
     # 找到 JAR
-    JAR_FILE=$(ls target/mathverse-server-*.jar 2>/dev/null | head -1)
+    JAR_FILE=$(ls target/knowledgepower-server-*.jar 2>/dev/null | head -1)
     if [ -z "$JAR_FILE" ]; then
         info "JAR 不存在，先编译..."
         build_backend
-        JAR_FILE=$(ls target/mathverse-server-*.jar 2>/dev/null | head -1)
+        JAR_FILE=$(ls target/knowledgepower-server-*.jar 2>/dev/null | head -1)
     fi
 
     info "启动后端: java -jar $(basename "$JAR_FILE")"
@@ -167,12 +167,12 @@ build_tauri() {
     info "Tauri 编译完成 ✅"
 
     # 如果 bundle 可用，创建 .app
-    if [ -f "target/release/bundle/macos/数理世界.app" ]; then
-        info "✅ .app 已生成: target/release/bundle/macos/数理世界.app"
+    if [ -f "target/release/bundle/macos/知识动力.app" ]; then
+        info "✅ .app 已生成: target/release/bundle/macos/知识动力.app"
     fi
 
-    if [ -f "target/release/bundle/dmg/数理世界.dmg" ]; then
-        info "✅ .dmg 已生成: target/release/bundle/dmg/数理世界.dmg"
+    if [ -f "target/release/bundle/dmg/知识动力.dmg" ]; then
+        info "✅ .dmg 已生成: target/release/bundle/dmg/知识动力.dmg"
     fi
 }
 
@@ -195,7 +195,7 @@ dev_mode() {
 
     info "前端 PID: $FRONTEND_PID"
     info ""
-    info "📐 MathVerse 开发模式已启动"
+    info "📐 KnowledgePower 开发模式已启动"
     info "   前端: http://localhost:8082"
     info "   后端: http://localhost:8080"
     info "   按 Ctrl+C 停止所有服务"
@@ -209,7 +209,7 @@ dev_mode() {
 # Step 6: 完整打包（增量构建）
 # ============================================================
 full_build() {
-    info "========== MathVerse 完整打包 =========="
+    info "========== KnowledgePower 完整打包 =========="
     check_java
     check_node
     check_rust
@@ -220,12 +220,12 @@ full_build() {
 
     info ""
     info "====================================="
-    info "🎉 MathVerse 打包完成！"
+    info "🎉 KnowledgePower 打包完成！"
     info "====================================="
     info "产物位置:"
-    info "  .app: $TAURI_DIR/target/release/bundle/macos/数理世界.app"
-    info "  .dmg: $TAURI_DIR/target/release/bundle/dmg/数理世界.dmg"
-    info "  后端: $SCRIPT_DIR/mathverse-backend.jar"
+    info "  .app: $TAURI_DIR/target/release/bundle/macos/知识动力.app"
+    info "  .dmg: $TAURI_DIR/target/release/bundle/dmg/知识动力.dmg"
+    info "  后端: $SCRIPT_DIR/knowledgepower-backend.jar"
     echo ""
 }
 

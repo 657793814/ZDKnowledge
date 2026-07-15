@@ -1,5 +1,5 @@
 #!/bin/bash
-# MathVerse 一键启动脚本
+# KnowledgePower 一键启动脚本
 # 用法:
 #   ./start.sh [backend] [frontend-only]
 #     backend: java | node (默认: java)
@@ -13,7 +13,7 @@ MODE="${2:-}"
 
 mkdir -p "$PROJECT_DIR/logs"
 
-echo "🚀 MathVerse 启动中..."
+echo "🚀 KnowledgePower 启动中..."
 echo "  后端引擎: $BACKEND"
 
 # ====== 后端启动 ======
@@ -31,12 +31,12 @@ start_java_backend() {
   fi
 
   echo "🗄️  检查数据库..."
-  DB_EXISTS=$(mysql -h 127.0.0.1 -u root -proot1234 -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='mathverse'" 2>/dev/null | grep mathverse || true)
+  DB_EXISTS=$(mysql -h 127.0.0.1 -u root -proot1234 -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='knowledgepower'" 2>/dev/null | grep knowledgepower || true)
   if [ -z "$DB_EXISTS" ]; then
     echo "  创建数据库..."
-    mysql -h 127.0.0.1 -u root -proot1234 -e "CREATE DATABASE mathverse DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    mysql -h 127.0.0.1 -u root -proot1234 -e "CREATE DATABASE knowledgepower DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     echo "  初始化表结构..."
-    mysql -h 127.0.0.1 -u root -proot1234 mathverse < "$PROJECT_DIR/server/src/main/resources/db/init.sql"
+    mysql -h 127.0.0.1 -u root -proot1234 knowledgepower < "$PROJECT_DIR/server/src/main/resources/db/init.sql"
   fi
 
   echo "🖥️  启动后端 (Spring Boot :8080)..."
@@ -55,7 +55,7 @@ start_node_backend() {
   PID=$(lsof -ti:3001 2>/dev/null) && kill -9 $PID 2>/dev/null && echo "  已停止旧进程"
 
   # 首次启动或数据库不存在时自动 seed
-  if [ ! -f "prisma/mathverse.db" ]; then
+  if [ ! -f "prisma/knowledgepower.db" ]; then
     echo "  📦 初始化数据库..."
     npx prisma db push --skip-generate > /dev/null 2>&1
     npx tsx src/seeders/index.ts > "$PROJECT_DIR/logs/seed.log" 2>&1 && echo "  ✅ 种子数据已写入"
@@ -96,7 +96,7 @@ fi
 start_frontend
 
 echo ""
-echo "✅ MathVerse 启动完成！"
+echo "✅ KnowledgePower 启动完成！"
 echo "  前端:     http://localhost:8082"
 echo "  后端:     ${API_TARGET:-http://localhost:8080}"
 echo ""
