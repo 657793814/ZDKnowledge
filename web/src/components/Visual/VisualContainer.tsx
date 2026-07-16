@@ -11,6 +11,7 @@ import ForceDiagram from './force-diagram/ForceDiagram';
 import MoleculeView from './molecule-view/MoleculeView';
 import OpticsDemo from './optics-demo/OpticsDemo';
 import CirclePower from './circle-power/CirclePower';
+import ProbabilitySim from './probability-sim/ProbabilitySim';
 
 interface Props {
   visualType?: string;
@@ -33,6 +34,7 @@ const visualRegistry: Record<string, React.FC<any>> = {
   'molecule-view': MoleculeView,
   'optics-demo': OpticsDemo,
   'circle-power': CirclePower,
+  'probability-sim': ProbabilitySim,
 };
 
 /** 互动演示容器 — 根据配置自动选择对应演示组件 */

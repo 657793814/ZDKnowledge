@@ -15,6 +15,7 @@ import knowledgeGraphRouter from './routes/knowledgeGraph.js';
 import knowledgeSearchRouter from './routes/knowledgeSearch.js';
 import examRouter from './routes/exam.js';
 import aiRouter from './routes/ai.js';
+import insightRouter from './routes/insight.js';
 import prisma from './db.js';
 
 const app = express();
@@ -47,6 +48,7 @@ app.use('/knowledge/graph', knowledgeGraphRouter);
 app.use('/knowledge/search', knowledgeSearchRouter);
 app.use('/exam', examRouter);
 app.use('/ai', aiRouter);
+app.use('/insight', insightRouter);
 
 // 健康检查
 app.get('/health', (_req, res) => {

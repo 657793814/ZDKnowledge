@@ -26,7 +26,22 @@ export function q(
   nodeId: string, subject: string, domain: string, level: string, qtype: string, diff: number,
   title: string, answer: string, explanation: string, options?: string | null
 ) {
-  return { nodeId, subject, domain, level, questionType: qtype, difficulty: diff, title, options: options || null, answer, explanation };
+  // 自动将数组格式 ["A. xxx","B. xxx"] 转为对象格式 {"A":"xxx","B":"xxx"}
+  let normalized = options || null;
+  if (normalized) {
+    try {
+      const parsed = JSON.parse(normalized);
+      if (Array.isArray(parsed)) {
+        const obj: Record<string, string> = {};
+        for (const item of parsed) {
+          const match = item.match(/^([A-Da-d])[.．、]\s*(.+)/);
+          if (match) obj[match[1].toUpperCase()] = match[2];
+        }
+        if (Object.keys(obj).length > 0) normalized = JSON.stringify(obj);
+      }
+    } catch {}
+  }
+  return { nodeId, subject, domain, level, questionType: qtype, difficulty: diff, title, options: normalized, answer, explanation };
 }
 
 // ==================== 内容构建器 ====================

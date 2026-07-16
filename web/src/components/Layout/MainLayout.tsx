@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Input, Select, Typography, Dropdown, Button, Space } from 'antd';
+import { Layout, Menu, Input, Typography, Dropdown, Button, Space } from 'antd';
 import {
   BookOutlined, SearchOutlined, BarChartOutlined,
   EditOutlined, PieChartOutlined, DeleteOutlined,
   PlayCircleOutlined, UserOutlined, LogoutOutlined,
   LoginOutlined, UserAddOutlined, SettingOutlined,
 } from '@ant-design/icons';
-import { SUBJECT_LABELS, SUBJECT_DOMAINS, LEVEL_COLORS } from '@/types';
+import { SUBJECT_DOMAINS } from '@/types';
 import { useSubjectStore } from '@/store/subjectStore';
-import type { SubjectKey } from '@/store/subjectStore';
 import { useAuth } from '@/components/Auth/AuthProvider';
 
 const { Header, Sider, Content } = Layout;
+
+import { AimOutlined } from '@ant-design/icons';
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -41,11 +42,6 @@ export default function MainLayout() {
     if (value.trim()) {
       navigate(`/search?q=${encodeURIComponent(value)}`);
     }
-  };
-
-  const handleSubjectChange = (value: SubjectKey) => {
-    setSubject(value);
-    navigate('/');
   };
 
   const domainMenuItems: { key: string; icon: JSX.Element; label: string; onClick: () => void }[] = Object.entries(domainLabels).map(([key, label]) => ({
@@ -78,16 +74,6 @@ export default function MainLayout() {
             知识动力
           </Typography.Title>
         </div>
-
-        <Select
-          value={currentSubject}
-          onChange={handleSubjectChange}
-          style={{ width: 140 }}
-          options={Object.entries(SUBJECT_LABELS).map(([value, label]) => ({
-            value,
-            label: <span style={{ fontSize: 14 }}>{String(label)}</span>,
-          }))}
-        />
 
         <Input.Search
           placeholder="搜索知识点..."
@@ -184,6 +170,12 @@ export default function MainLayout() {
             mode="inline"
             selectable={false}
             items={[
+              {
+                key: 'insight',
+                icon: <AimOutlined />,
+                label: '🎯 试卷洞察',
+                onClick: () => navigate('/insight'),
+              },
               {
                 key: 'animation-demo',
                 icon: <PlayCircleOutlined />,

@@ -1,6 +1,6 @@
 # KnowledgePower 知识动力
 
-📐 交互式知识图谱 + 训练系统 + AI 导师 + RAG 知识库
+交互式知识图谱 + 训练系统 + AI 导师 + RAG 知识库
 
 ![Tech Stack](https://img.shields.io/badge/React-18-blue) ![Tech Stack](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen) ![Tech Stack](https://img.shields.io/badge/Node.js-18-green) ![Tech Stack](https://img.shields.io/badge/SQLite-blue) ![Tech Stack](https://img.shields.io/badge/MySQL-8.0-orange) ![Tech Stack](https://img.shields.io/badge/Tauri-v2-purple)
 
@@ -59,12 +59,6 @@ KnowledgePower/
 ├── server/                     # 🟢 Java 后端 (Spring Boot + MySQL)
 ├── src-tauri/                  # ⚪ Tauri v2 桌面壳 (Rust)
 ├── knowledge-base/             # 📚 知识库 Markdown 文档 + RAG 嵌入脚本
-│   ├── 01-数的世界/
-│   ├── 03-方程与不等式/
-│   ├── 04-函数/
-│   ├── 05-几何/
-│   ├── 06-排列组合与统计/
-│   ├── 07-数列与导数/
 │   ├── embeddings/             # 向量嵌入模块（Ollama）
 │   ├── parsers/                # 文档解析模块（PDF/Markdown）
 │   ├── vector_store/           # 向量存储模块（Milvus）

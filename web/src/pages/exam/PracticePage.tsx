@@ -22,6 +22,7 @@ export default function PracticePage() {
   const [searchParams] = useSearchParams();
   const { currentSubject } = useSubjectStore();
   const [domain, setDomain] = useState<string | undefined>(searchParams.get('domain') || undefined);
+  const [level, setLevel] = useState<string>('高中');
   const [count, setCount] = useState(10);
   const [result, setResult] = useState<ExamResultVO | null>(null);
   const [aiExplaining, setAiExplaining] = useState<Record<number, boolean>>({});
@@ -50,7 +51,7 @@ export default function PracticePage() {
     setResult(null);
     setAnswers({});
     try {
-      const data = await fetchRandomQuestions(currentSubject, domain, undefined, count);
+      const data = await fetchRandomQuestions(currentSubject, domain, level === '全部' ? undefined : level, count);
       setQuestions(data);
     } finally {
       setLoading(false);
@@ -163,6 +164,13 @@ export default function PracticePage() {
               value: key,
               label: val,
             }))} />
+          <span style={{ fontSize: 13 }}>阶段：</span>
+          <Select value={level} onChange={setLevel} style={{ width: 100 }}
+            options={[
+              { value: '全部', label: '全部' },
+              { value: '高中', label: '📗 高中' },
+              { value: '初中', label: '📘 初中' },
+            ]} />
           <span style={{ fontSize: 13 }}>题数：</span>
           <Select value={count} onChange={setCount} style={{ width: 80 }}
             options={[5, 10, 15, 20].map(n => ({ value: n, label: `${n}题` }))} />
@@ -173,9 +181,18 @@ export default function PracticePage() {
 
       <Spin spinning={loading}>
         {questions.map((q, i) => {
-          let parsedOptions: Record<string, string> | null = null;
+          let parsedOptions: any = null;
           try {
             if (q.options) parsedOptions = JSON.parse(q.options);
+            // 兼容数组格式 ["A. xxx","B. xxx"] → 自动转为 {"A":"xxx","B":"xxx"}
+            if (Array.isArray(parsedOptions)) {
+              const obj: Record<string, string> = {};
+              for (const item of parsedOptions) {
+                const match = item.match(/^([A-Da-d])[.．、]\s*(.+)/);
+                if (match) obj[match[1].toUpperCase()] = match[2];
+              }
+              if (Object.keys(obj).length > 0) parsedOptions = obj;
+            }
           } catch { /* ignore */ }
 
           const isChoice = q.questionType === 'choice';

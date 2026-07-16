@@ -277,6 +277,75 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
         </div>
       );
 
+    case 'extended-thinking':
+      return (
+        <div className="detail-section" key={index} style={{ background: '#f0f9ff' }}>
+          <h3 style={{ color: '#0369a1' }}>{'🧩 ' + (section.title || '思维拓展')}</h3>
+          {section.items?.length > 0 && (
+            <div>
+              {section.items.map((item: any, i: number) => (
+                <div key={i} style={{
+                  marginBottom: 10,
+                  padding: '12px 14px',
+                  background: '#fff',
+                  borderRadius: 8,
+                  border: '1px solid #bae6fd',
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: '#0c4a6e',
+                }}>
+                  <span style={{ color: '#0284c7', marginRight: 6 }}>✦</span>
+                  <span dangerouslySetInnerHTML={{ __html: renderFormula(item.content || item) }} />
+                </div>
+              ))}
+            </div>
+          )}
+          {section.content && (
+            <p style={{ fontSize: 14, lineHeight: 1.8, color: '#0c4a6e', whiteSpace: 'pre-line' }}
+              dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
+          )}
+        </div>
+      );
+
+    case 'history':
+      return (
+        <div className="detail-section" key={index} style={{ background: '#fffbeb' }}>
+          <h3 style={{ color: '#b45309' }}>{'📜 ' + (section.title || '史话')}</h3>
+          <div style={{
+            fontSize: 14, lineHeight: 1.9, color: '#78350f', whiteSpace: 'pre-line',
+            padding: '12px 16px', background: '#fff', borderRadius: 8,
+            border: '1px solid #fde68a',
+          }}
+            dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
+        </div>
+      );
+
+    case 'cross-domain':
+      return (
+        <div className="detail-section" key={index} style={{ background: '#ecfdf5' }}>
+          <h3 style={{ color: '#0d9488' }}>{'🔗 ' + (section.title || '跨域链接')}</h3>
+          {section.items?.length > 0 && (
+            <div>
+              {section.items.map((item: any, i: number) => (
+                <div key={i} style={{
+                  marginBottom: 10,
+                  padding: '12px 14px',
+                  background: '#fff',
+                  borderRadius: 8,
+                  border: '1px solid #a7f3d0',
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: '#134e4a',
+                }}>
+                  <span style={{ color: '#0d9488', marginRight: 6 }}>✦</span>
+                  <span dangerouslySetInnerHTML={{ __html: renderFormula(item.content || item) }} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+
     default:
       return (
         <div className="detail-section" key={index}>

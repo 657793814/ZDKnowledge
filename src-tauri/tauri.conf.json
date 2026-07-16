@@ -6,8 +6,7 @@
   "build": {
     "frontendDist": "../web/dist",
     "devUrl": "http://localhost:8082",
-    "beforeDevCommand": "unset npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use default --silent && cd ../web && npm run dev",
-    "beforeBuildCommand": "unset npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use default --silent && cd ../web && npm run build"
+    "beforeDevCommand": "unset npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use default --silent && cd web && npm run dev"
   },
   "app": {
     "windows": [

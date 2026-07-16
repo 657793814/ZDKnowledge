@@ -9,7 +9,13 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// 兼容 esbuild bundle（没有 import.meta）和 tsx 开发的两种场景
+let __dirname: string;
+try {
+  __dirname = dirname(fileURLToPath(import.meta.url));
+} catch {
+  __dirname = process.cwd();
+}
 
 // ===== AI 配置类型 =====
 export interface AiConfig {
@@ -29,7 +35,8 @@ export interface AiConfig {
   ollamaBaseUrl: string;
 }
 
-const AI_CONFIG_PATH = join(__dirname, '../../config/ai-config.json');
+// 可通过环境变量 ZD_CONFIG_PATH 覆盖配置路径（打包后场景）
+const AI_CONFIG_PATH = process.env.ZD_CONFIG_PATH || join(__dirname, '../../config/ai-config.json');
 
 let aiConfig: AiConfig;
 
