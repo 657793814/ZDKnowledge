@@ -220,8 +220,7 @@ router.post('/generate', async (req, res, next) => {
     };
 
     const paper = await examService.autoGenerate({
-      subject,
-      nodeIds: nodeIds?.length ? nodeIds : undefined,
+      domain: subject ? undefined : undefined,
       count,
       mode: 'auto',
     });

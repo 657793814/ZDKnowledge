@@ -1,20 +1,18 @@
-/**
- * useSpaceCanvas — 管理 Canvas 动画生命周期
- */
-import { useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { SpaceScene } from '@/utils/spaceScene';
 
+/**
+ * 连接 Canvas 元素到 SpaceScene 渲染引擎
+ * 纯视觉背景，不处理鼠标交互（鼠标视差已移除）
+ */
 export function useSpaceCanvas(
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  onReady?: () => void
+  onReady?: () => void,
 ) {
   const sceneRef = useRef<SpaceScene | null>(null);
-  const animRef = useRef<number>(0);
-  const mouseRef = useRef({ x: 0.5, y: 0.5 });
-
-  const setMouse = useCallback((x: number, y: number) => {
-    mouseRef.current = { x, y };
-  }, []);
+  const frameRef = useRef<number>(0);
+  const startTimeRef = useRef<number>(0);
+  const readyRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -23,7 +21,10 @@ export function useSpaceCanvas(
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const scene = new SpaceScene(ctx);
+    sceneRef.current = scene;
+
     const resize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -32,36 +33,30 @@ export function useSpaceCanvas(
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.scale(dpr, dpr);
-
-      if (!sceneRef.current) {
-        sceneRef.current = new SpaceScene(ctx);
-        sceneRef.current.init(w, h, dpr);
-        onReady?.();
-      } else {
-        sceneRef.current.resize(w, h);
-      }
+      scene.init(w, h, dpr);
     };
 
     resize();
     window.addEventListener('resize', resize);
 
-    let startTime = performance.now();
-    const animate = (now: number) => {
-      const time = (now - startTime) / 1000;
-      const scene = sceneRef.current;
-      if (scene) {
-        scene.setMouse(mouseRef.current.x, mouseRef.current.y);
-        scene.render(time);
-      }
-      animRef.current = requestAnimationFrame(animate);
+    const loop = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const t = (timestamp - startTimeRef.current) / 1000;
+      scene.render(t);
+      frameRef.current = requestAnimationFrame(loop);
     };
-    animRef.current = requestAnimationFrame(animate);
+    frameRef.current = requestAnimationFrame(loop);
+
+    if (!readyRef.current) {
+      readyRef.current = true;
+      onReady?.();
+    }
 
     return () => {
-      cancelAnimationFrame(animRef.current);
+      cancelAnimationFrame(frameRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, [canvasRef, onReady]);
+  }, [canvasRef]);
 
-  return { setMouse };
+  return {};
 }

@@ -37459,8 +37459,7 @@ router10.post("/generate", async (req, res, next) => {
   try {
     const { nodeIds, subject, count = 10 } = req.body;
     const paper = await examService3.autoGenerate({
-      subject,
-      nodeIds: nodeIds?.length ? nodeIds : void 0,
+      domain: subject ? void 0 : void 0,
       count,
       mode: "auto"
     });
