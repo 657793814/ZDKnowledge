@@ -1,6 +1,7 @@
 # Node
 node_modules/
 web/dist/
+node-server/.tts-cache/
 
 # AI Config (包含敏感信息)
 config/ai-config.json
