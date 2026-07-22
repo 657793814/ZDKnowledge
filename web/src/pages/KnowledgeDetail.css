@@ -8,6 +8,7 @@
 
 /* 毛玻璃卡片 */
 .detail-section {
+  position: relative;
   background: var(--color-surface, rgba(255,255,255,0.85));
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -120,4 +121,41 @@
 .back-to-top.visible {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* ── TTS 每节悬浮按钮 ── */
+.tts-section-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+  transition: opacity 0.2s, background 0.2s;
+  z-index: 2;
+  line-height: 1;
+  padding: 0;
+}
+
+.tts-section-btn:hover,
+.tts-section-btn.tts-speaking {
+  opacity: 1;
+}
+
+.tts-section-btn.tts-speaking {
+  background: #fee2e2;
+  box-shadow: 0 1px 6px rgba(239, 68, 68, 0.3);
+}
+
+.detail-section:hover .tts-section-btn {
+  opacity: 1;
 }

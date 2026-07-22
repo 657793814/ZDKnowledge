@@ -8,6 +8,7 @@ export const SUBJECT_LABELS: Record<string, string> = {
   history: '📜 历史',
   politics: '⚖️ 政治',
   geo: '🌍 地理',
+  chinese: '📖 语文',
   cs: '💻 计算机',
 };
 
@@ -16,6 +17,7 @@ export const SUBJECT_KEYS = Object.keys(SUBJECT_LABELS);
 export const SUBJECT_EMOJI: Record<string, string> = {
   math: '📐', physics: '⚛️', chemistry: '🧪', bio: '🧬',
   eng: '🇬🇧', history: '📜', politics: '⚖️', geo: '🌍',
+  chinese: '📖',
   cs: '💻',
 };
 
@@ -88,6 +90,14 @@ export const SUBJECT_DOMAINS: Record<string, Record<string, string>> = {
     '区域地理': '🗺️ [地理] 区域地理',
     '地图与地理工具': '📍 [地理] 地图与地理工具',
     '环境与可持续发展': '🌿 [地理] 环境与可持续发展',
+  },
+  chinese: {
+    '古诗词': '📜 [语文] 古诗词',
+    '文言文': '📖 [语文] 文言文',
+    '现代文阅读': '📚 [语文] 现代文阅读',
+    '语言文字运用': '✏️ [语文] 语言文字运用',
+    '文学常识': '🏛️ [语文] 文学常识',
+    '作文': '🎯 [语文] 作文',
   },
   cs: {
     '计算机基础': '💻 [计算机] 计算机基础',
@@ -181,6 +191,13 @@ export const DOMAIN_COLORS: Record<string, string> = {
   '计算机网络': '#00BCD4',
   '数据库': '#4CAF50',
   '操作系统': '#F44336',
+  // 语文
+  '古诗词': '#E91E63',
+  '文言文': '#795548',
+  '现代文阅读': '#2196F3',
+  '语言文字运用': '#FF9800',
+  '文学常识': '#9C27B0',
+  '作文': '#4CAF50',
 };
 
 export const LEVEL_COLORS: Record<string, string> = {

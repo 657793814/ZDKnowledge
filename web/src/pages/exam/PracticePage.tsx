@@ -9,11 +9,36 @@ import { DOMAIN_COLORS, SUBJECT_DOMAINS, SUBJECT_LABELS } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { useSubjectStore } from '@/store/subjectStore';
 import { renderFormula } from '@/utils/renderFormula';
-import { AnimationContainer } from '@/components';
+import { stripHtml } from '@/utils/stripHtml';
+import { AnimationContainer, TTSButton } from '@/components';
 
 const { TextArea } = Input;
 
+/** 从题目中提取可读文本 */
+function getQuestionText(q: ExamQuestionVO): string {
+  const parts: string[] = [stripHtml(q.title)];
+  if (q.options) {
+    try {
+      const opts = JSON.parse(q.options);
+      if (typeof opts === 'object' && !Array.isArray(opts)) {
+        Object.entries(opts).forEach(([k, v]) => parts.push(`${k}. ${String(v)}`));
+      } else if (Array.isArray(opts)) {
+        opts.forEach(o => parts.push(stripHtml(o)));
+      }
+    } catch {}
+  }
+  return parts.join('。');
+}
 
+/** 从结果详情 + 题目中提取可读文本 */
+function getResultText(d: any, q: ExamQuestionVO | undefined): string {
+  if (!q) return '';
+  const parts: string[] = [getQuestionText(q)];
+  if (d.userAnswer) parts.push('你选择了：' + String(d.userAnswer));
+  if (!d.correct && d.correctAnswer) parts.push('正确答案：' + stripHtml(d.correctAnswer));
+  if (d.explanation) parts.push(stripHtml(d.explanation));
+  return parts.join('。');
+}
 
 export default function PracticePage() {
   const [questions, setQuestions] = useState<ExamQuestionVO[]>([]);
@@ -108,7 +133,10 @@ export default function PracticePage() {
             <Card key={d.questionId} size="small" style={{ marginBottom: 8, borderLeft: `4px solid ${d.correct ? '#10B981' : '#EF4444'}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 600 }}>第 {i + 1} 题 {d.correct ? '✅' : '❌'}</span>
-                <span style={{ fontSize: 12, color: '#94a3b8' }}>{q?.nodeTitle}</span>
+                <Space>
+                  <TTSButton text={getResultText(d, q)} size="small" />
+                  <span style={{ fontSize: 12, color: '#94a3b8' }}>{q?.nodeTitle}</span>
+                </Space>
               </div>
               <div style={{ margin: '8px 0', fontSize: 14 }} dangerouslySetInnerHTML={{ __html: renderFormula(q?.title || '') }} />
               <div style={{ fontSize: 13, color: '#64748b' }}>
@@ -129,7 +157,10 @@ export default function PracticePage() {
                 <>
                   {aiExplanations[d.questionId] ? (
                     <div style={{ marginTop: 8, fontSize: 13, background: '#f0f9ff', padding: '8px 12px', borderRadius: 8, border: '1px solid #bae6fd' }}>
-                      <div style={{ fontWeight: 600, color: '#0369a1', marginBottom: 4 }}>🤖 AI 深度解析</div>
+                      <div style={{ fontWeight: 600, color: '#0369a1', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                        🤖 AI 深度解析
+                        <TTSButton text={stripHtml(aiExplanations[d.questionId])} size="small" />
+                      </div>
                       <div style={{ lineHeight: 1.7, color: '#1e293b' }}>{aiExplanations[d.questionId]}</div>
                     </div>
                   ) : (
@@ -204,13 +235,14 @@ export default function PracticePage() {
 
           return (
             <Card key={q.id} size="small" style={{ marginBottom: 12, borderLeft: `4px solid ${DOMAIN_COLORS[q.domain] || '#94a3b8'}` }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                 <Space size={4}>
                   <Tag color={DOMAIN_COLORS[q.domain]}>{SUBJECT_LABELS[q.subject] || q.subject} · {q.domain}</Tag>
                   <Tag>{q.level}</Tag>
                   <Tag color="orange">{'★'.repeat(q.difficulty)}{'☆'.repeat(5 - q.difficulty)}</Tag>
                   <span style={{ fontSize: 12, color: '#94a3b8' }}>{q.nodeTitle}</span>
                 </Space>
+                <TTSButton text={getQuestionText(q)} size="small" />
               </div>
 
               <div style={{ fontSize: 15, lineHeight: 1.8, marginBottom: 12 }}

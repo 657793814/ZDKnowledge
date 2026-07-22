@@ -69,6 +69,7 @@ import { seedBioHumanBody } from './domains/bio-03-human-body.js';
 import { seedBioPlants } from './domains/bio-04-plants.js';
 import { seedBioEcology } from './domains/bio-05-ecology.js';
 import { seedBioBiotech } from './domains/bio-06-biotech.js';
+import { seedBioEvolutionDomain } from './domains/bio-07-evolution-deep.js';
 
 // 化学
 import { seedChemistryStructure } from './domains/chem-01-structure.js';
@@ -85,22 +86,26 @@ import { seedEnglishTenseDomain } from './domains/eng-03-tense.js';
 import { seedEnglishSyntaxDomain } from './domains/eng-04-syntax.js';
 import { seedEnglishReadingDomain } from './domains/eng-05-reading.js';
 import { seedEnglishWritingDomain } from './domains/eng-06-writing.js';
+import { seedEnglishListeningDomain } from './domains/eng-07-listening-speaking.js';
 
 // 历史
 import { seedChineseHistoryDomain } from './domains/history-01-china.js';
 import { seedModernChinaHistoryDomain } from './domains/history-02-modern-china.js';
 import { seedWorldAncientHistoryDomain } from './domains/history-03-world-ancient.js';
 import { seedWorldModernHistoryDomain } from './domains/history-04-world-modern.js';
+import { seedWorldWar2Domain } from './domains/history-05-world-war2.js';
 
 // 政治
 import { seedPoliticsDomain } from './domains/politics-01-fundamentals.js';
 import { seedPoliticsExpansion } from './domains/politics-02-expansion.js';
+import { seedPoliticsLawDomain } from './domains/politics-03-law.js';
 
 // 地理
 import { seedGeographyDomain } from './domains/geography-01-fundamentals.js';
 import { seedRegionalGeographyDomain } from './domains/geo-02-regional.js';
 import { seedMappingGeographyDomain } from './domains/geo-03-mapping.js';
 import { seedSustainabilityGeographyDomain } from './domains/geo-04-sustainability.js';
+import { seedPhysicalGeoDeepDomain } from './domains/geo-05-physical-deep.js';
 
 // 计算机
 import { seedCSBasicsDomain } from './domains/cs-01-basics.js';
@@ -110,6 +115,18 @@ import { seedCSAlgorithmDomain } from './domains/cs-04-algorithm.js';
 import { seedCSNetworkDomain } from './domains/cs-05-network.js';
 import { seedCSDatabaseDomain } from './domains/cs-06-database.js';
 import { seedCSOSDomain } from './domains/cs-07-os.js';
+
+// 语文
+import { seedChinesePoetryDomain } from './domains/chinese-01-poetry.js';
+import { seedChineseClassicalDomain } from './domains/chinese-02-classical.js';
+import { seedChineseModernReadingDomain } from './domains/chinese-03-modern-reading.js';
+import { seedChineseLanguageUsageDomain } from './domains/chinese-04-language-usage.js';
+import { seedChineseLiteratureDomain } from './domains/chinese-05-literature.js';
+import { seedChineseWritingDomain } from './domains/chinese-06-writing.js';
+import { seedChineseMasterpiecesDomain } from './domains/chinese-09-masterpieces.js';
+import { seedChineseAppreciationDomain } from './domains/chinese-10-appreciation.js';
+import { seedChineseDictationDomain } from './domains/chinese-07-dictation.js';
+import { seedChineseWordConfusionDomain } from './domains/chinese-08-word-confusion.js';
 
 async function main() {
   console.log('========================================');
@@ -207,6 +224,7 @@ async function main() {
   await seedBioPlants();
   await seedBioEcology();
   await seedBioBiotech();
+  await seedBioEvolutionDomain();
 
   // ===== 化学 =====
   console.log('\n🧪 化学\n' + '='.repeat(20));
@@ -225,6 +243,7 @@ async function main() {
   await seedEnglishSyntaxDomain();
   await seedEnglishReadingDomain();
   await seedEnglishWritingDomain();
+  await seedEnglishListeningDomain();
 
   // ===== 历史 =====
   console.log('\n📜 历史\n' + '='.repeat(20));
@@ -232,11 +251,13 @@ async function main() {
   await seedModernChinaHistoryDomain();
   await seedWorldAncientHistoryDomain();
   await seedWorldModernHistoryDomain();
+  await seedWorldWar2Domain();
 
   // ===== 政治 =====
   console.log('\n🏛️ 政治\n' + '='.repeat(20));
   await seedPoliticsDomain();
   await seedPoliticsExpansion();
+  await seedPoliticsLawDomain();
 
   // ===== 地理 =====
   console.log('\n🌍 地理\n' + '='.repeat(20));
@@ -244,6 +265,7 @@ async function main() {
   await seedRegionalGeographyDomain();
   await seedMappingGeographyDomain();
   await seedSustainabilityGeographyDomain();
+  await seedPhysicalGeoDeepDomain();
 
   // ===== 计算机 =====
   console.log('\n💻 计算机\n' + '='.repeat(20));
@@ -254,6 +276,21 @@ async function main() {
   await seedCSNetworkDomain();
   await seedCSDatabaseDomain();
   await seedCSOSDomain();
+
+  // ===== 语文 =====
+  console.log('\n📖 语文\n' + '='.repeat(20));
+  await seedChinesePoetryDomain();
+  await seedChineseClassicalDomain();
+  await seedChineseModernReadingDomain();
+  await seedChineseLanguageUsageDomain();
+  await seedChineseLiteratureDomain();
+  await seedChineseWritingDomain();
+  await seedChineseAppreciationDomain();
+  await seedChineseDictationDomain();
+  await seedChineseWordConfusionDomain();
+
+  // ===== 古诗文名篇精讲 =====
+  await seedChineseMasterpiecesDomain();
 
   // ===== 题库 =====
   console.log('\n📝 题库\n' + '='.repeat(20));

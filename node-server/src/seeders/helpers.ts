@@ -126,20 +126,32 @@ export function richContent(
   analogy?: string,
   derivation?: { title?: string; content?: string; steps?: string[]; formulas?: string[]; result?: string },
   visual?: { type: string; [key: string]: any },
+  sectionTitles?: Partial<{
+    definition: string;
+    formula: string;
+    keypoints: string;
+    example: string;
+    'exam-focus': string;
+    strategy: string;
+    'common-mistakes': string;
+    extended: string;
+    analogy: string;
+  }>,
 ): string {
   const sections: Section[] = [];
 
   // 定义
-  sections.push({ type: 'definition', title: '📖 核心定义', content: def, formulas: formulas.length > 0 ? formulas : undefined });
+  const t = sectionTitles || {};
+  sections.push({ type: 'definition', title: t.definition || '📖 核心定义', content: def, formulas: formulas.length > 0 ? formulas : undefined });
 
   // 公式
   if (formulas.length > 0) {
-    sections.push({ type: 'formula', title: '公式与定理', formulas, content: formulas.join('；') });
+    sections.push({ type: 'formula', title: t.formula || '公式与定理', formulas, content: formulas.join('；') });
   }
 
   // 要点
   if (keypoints.length > 0) {
-    sections.push({ type: 'keypoints', title: '核心要点', items: keypoints });
+    sections.push({ type: 'keypoints', title: t.keypoints || '核心要点', items: keypoints });
   }
 
   // 推导证明
@@ -149,27 +161,27 @@ export function richContent(
 
   // 类比
   if (analogy) {
-    sections.push({ type: 'analogy', title: '类比理解', content: analogy });
+    sections.push({ type: 'analogy', title: t.analogy || '类比理解', content: analogy });
   }
 
   // 示例
   if (examples.length > 0) {
-    sections.push({ type: 'example', title: '典型例题', items: examples as any });
+    sections.push({ type: 'example', title: t.example || '典型例题', items: examples as any });
   }
 
   // 考点
   if (examFocus) {
-    sections.push({ type: 'exam-focus', title: '考点分析', content: examFocus });
+    sections.push({ type: 'exam-focus', title: t['exam-focus'] || '考点分析', content: examFocus });
   }
 
   // 解题思路
   if (strategy && strategy.length > 0) {
-    sections.push({ type: 'strategy', title: '解题思路', items: strategy });
+    sections.push({ type: 'strategy', title: t.strategy || '解题思路', items: strategy });
   }
 
   // 易错点
   if (commonMistakes && commonMistakes.length > 0) {
-    sections.push({ type: 'common-mistakes', title: '易错点辨析', items: commonMistakes });
+    sections.push({ type: 'common-mistakes', title: t['common-mistakes'] || '易错点辨析', items: commonMistakes });
   }
 
   // 可视化
@@ -179,7 +191,7 @@ export function richContent(
 
   // 拓展
   if (extended) {
-    sections.push({ type: 'extended', title: '拓展延伸', content: extended });
+    sections.push({ type: 'extended', title: t.extended || '拓展延伸', content: extended });
   }
 
   return JSON.stringify({ sections });

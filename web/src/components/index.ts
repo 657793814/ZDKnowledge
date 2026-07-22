@@ -20,3 +20,4 @@ export { default as KnowledgeCard } from './Card/KnowledgeCard';
 export { Loading } from './common/Loading';
 export { default as ModelImage } from './ModelImage';
 export { default as ModelVideo } from './ModelVideo';
+export { TTSButton } from './TTS';

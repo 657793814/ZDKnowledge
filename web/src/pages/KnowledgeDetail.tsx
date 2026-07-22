@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react';
 import { renderFormula } from '@/utils/renderFormula';
 import { fetchModelTrainQuestions } from '@/api/exam';
 import type { ExamQuestionVO } from '@/types';
+import { TTSButton } from '@/components';
+import { stripHtml } from '@/utils/stripHtml';
 import './KnowledgeDetail.css';
 
 function FormulaBlock({ formula }: { formula: string }) {
@@ -40,24 +42,42 @@ function renderSectionMedia(section: any): React.ReactNode {
   );
 }
 
+/** 提取 section 中的纯文本用于朗读 */
+function extractSectionText(section: any): string {
+  const texts: string[] = [];
+  if (section.title) texts.push(stripHtml(section.title));
+  if (section.content) texts.push(stripHtml(section.content));
+  if (section.formulas) {
+    const f = Array.isArray(section.formulas) ? section.formulas.join('，') : section.formulas;
+    texts.push(stripHtml(f));
+  }
+  if (section.items) {
+    section.items.forEach((item: any) => {
+      if (typeof item === 'string') texts.push(stripHtml(item));
+      else if (item.question) texts.push(stripHtml(item.question));
+      else if (item.answer) texts.push(stripHtml(item.answer));
+      else if (item.mistake) texts.push(stripHtml(item.mistake));
+      else if (item.correct) texts.push(stripHtml(item.correct));
+    });
+  }
+  return texts.filter(Boolean).join('。');
+}
+
 function SectionRenderer({ section, index }: { section: any; index: number }) {
   switch (section.type) {
     case 'definition':
       return (
         <div className="detail-section" key={index}>
-          <h3>{section.title || '📖 核心定义'}</h3>
+          <h3>{section.title || '📖 核心定义'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#374151' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
-          {section.formulas?.map((f: string, i: number) => (
-            <FormulaBlock key={i} formula={f} />
-          ))}
         </div>
       );
 
     case 'formula':
       return (
         <div className="detail-section" key={index} style={{ background: '#f8fafc' }}>
-          <h3 style={{ color: '#1e40af' }}>{'📐 ' + (section.title || '公式与定理')}</h3>
+          <h3 style={{ color: '#1e40af' }}>{'📐 ' + (section.title || '公式与定理')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.formulas?.map((f: string, i: number) => (
             <FormulaBlock key={i} formula={f} />
           ))}
@@ -69,7 +89,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'visualization':
       return (
         <div className="detail-section" key={index}>
-          <h3>{section.title || '🎨 直观理解'}</h3>
+          <h3>{section.title || '🎨 直观理解'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: '#64748b', whiteSpace: 'pre-line' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
           {section.visual && (
@@ -84,7 +104,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'animation':
       return (
         <div className="detail-section" key={index}>
-          <h3>{'🎬 ' + (section.title || '动画演示')}</h3>
+          <h3>{'🎬 ' + (section.title || '动画演示')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.content && (
             <p style={{ fontSize: 14, lineHeight: 1.8, color: '#64748b', marginBottom: 12, whiteSpace: 'pre-line' }}
               dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
@@ -99,7 +119,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'keypoints':
       return (
         <div className="detail-section" key={index}>
-          <h3>{section.title || '📋 核心要点'}</h3>
+          <h3>{section.title || '📋 核心要点'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <ul style={{ paddingLeft: 20, lineHeight: 2.2 }}>
             {section.items?.map((item: string, i: number) => {
               const linkMatch = item.match(/\[([^\]]+)\]\(([^)]+)\)/);
@@ -126,7 +146,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'example':
       return (
         <div className="detail-section" key={index}>
-          <h3>{'✏️ ' + (section.title || '典型例题')}</h3>
+          <h3>{'✏️ ' + (section.title || '典型例题')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.map((ex: any, i: number) => (
             <div key={i} className="practice-question" style={{ borderLeft: '3px solid #3B82F6', paddingLeft: 12, marginBottom: 12 }}>
               <p style={{ fontWeight: 600, marginBottom: 8, fontSize: 14, color: '#1e293b' }}
@@ -144,9 +164,21 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
                   ))}
                 </div>
               )}
-              <div>
-                <Tag color="green">答案：<span dangerouslySetInnerHTML={{ __html: renderFormula(ex.answer) }} /></Tag>
-                {ex.solution && <Tag color="blue" style={{ whiteSpace: 'pre-wrap' }}>{ex.solution}</Tag>}
+              <div style={{ marginTop: 4 }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <span style={{
+                    background: '#f0fdf4', color: '#16a34a', fontWeight: 600,
+                    fontSize: 13, padding: '2px 8px', borderRadius: 4,
+                    whiteSpace: 'nowrap', flexShrink: 0,
+                  }}>答案</span>
+                  <span style={{ fontSize: 14, lineHeight: 1.6, color: '#166534', wordBreak: 'break-word' }}
+                    dangerouslySetInnerHTML={{ __html: renderFormula(ex.answer) }} />
+                </div>
+                {ex.solution && (
+                  <div style={{ background: '#f0f9ff', padding: '8px 12px', borderRadius: 6, marginTop: 6, fontSize: 13, lineHeight: 1.6, color: '#0369a1', wordBreak: 'break-word' }}>
+                    💡 <span dangerouslySetInnerHTML={{ __html: renderFormula(ex.solution) }} />
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -168,7 +200,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'exam-focus':
       return (
         <div className="detail-section" key={index} style={{ background: '#fff7ed' }}>
-          <h3 style={{ color: '#c2410c' }}>{'🎯 ' + (section.title || '考点分析')}</h3>
+          <h3 style={{ color: '#c2410c' }}>{'🎯 ' + (section.title || '考点分析')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: '#7c2d12', whiteSpace: 'pre-line' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
           {section.items?.length > 0 && (
@@ -184,7 +216,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'derivation':
       return (
         <div className="detail-section" key={index} style={{ background: '#fefce8' }}>
-          <h3 style={{ color: '#d97706' }}>{'📐 ' + (section.title || '推导证明')}</h3>
+          <h3 style={{ color: '#d97706' }}>{'📐 ' + (section.title || '推导证明')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: '#374151' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content || '') }} />
           {section.steps?.length > 0 && (
@@ -228,7 +260,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'strategy':
       return (
         <div className="detail-section" key={index} style={{ background: '#f0fdf4' }}>
-          <h3 style={{ color: '#16a34a' }}>{'💡 ' + (section.title || '解题思路')}</h3>
+          <h3 style={{ color: '#16a34a' }}>{'💡 ' + (section.title || '解题思路')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.length > 0 && (
             <div style={{ counterReset: 'step' }}>
               {section.items.map((item: string, i: number) => (
@@ -258,7 +290,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'common-mistakes':
       return (
         <div className="detail-section" key={index} style={{ background: '#fef2f2' }}>
-          <h3 style={{ color: '#dc2626' }}>{'⚠️ ' + (section.title || '易错点辨析')}</h3>
+          <h3 style={{ color: '#dc2626' }}>{'⚠️ ' + (section.title || '易错点辨析')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.length > 0 && (
             <div>
               {section.items.map((item: string | { mistake: string; correct: string }, i: number) => (
@@ -289,7 +321,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'analogy':
       return (
         <div className="detail-section" key={index} style={{ background: '#fefce8' }}>
-          <h3 style={{ color: '#d97706' }}>{'💡 ' + (section.title || '类比理解')}</h3>
+          <h3 style={{ color: '#d97706' }}>{'💡 ' + (section.title || '类比理解')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 14, lineHeight: 2, color: '#92400e', whiteSpace: 'pre-line' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
         </div>
@@ -298,7 +330,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'extended':
       return (
         <div className="detail-section" key={index} style={{ background: '#f5f3ff' }}>
-          <h3 style={{ color: '#7c3aed' }}>{'🚀 ' + (section.title || '拓展延伸')}</h3>
+          <h3 style={{ color: '#7c3aed' }}>{'🚀 ' + (section.title || '拓展延伸')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: '#4c1d95', whiteSpace: 'pre-line' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
           {section.items?.length > 0 && (
@@ -314,7 +346,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'extended-thinking':
       return (
         <div className="detail-section" key={index} style={{ background: '#f0f9ff' }}>
-          <h3 style={{ color: '#0369a1' }}>{'🧩 ' + (section.title || '思维拓展')}</h3>
+          <h3 style={{ color: '#0369a1' }}>{'🧩 ' + (section.title || '思维拓展')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.length > 0 && (
             <div>
               {section.items.map((item: any, i: number) => (
@@ -344,7 +376,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'history':
       return (
         <div className="detail-section" key={index} style={{ background: '#fffbeb' }}>
-          <h3 style={{ color: '#b45309' }}>{'📜 ' + (section.title || '史话')}</h3>
+          <h3 style={{ color: '#b45309' }}>{'📜 ' + (section.title || '史话')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <div style={{
             fontSize: 14, lineHeight: 1.9, color: '#78350f', whiteSpace: 'pre-line',
             padding: '12px 16px', background: '#fff', borderRadius: 8,
@@ -357,7 +389,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'cross-domain':
       return (
         <div className="detail-section" key={index} style={{ background: '#ecfdf5' }}>
-          <h3 style={{ color: '#0d9488' }}>{'🔗 ' + (section.title || '跨域链接')}</h3>
+          <h3 style={{ color: '#0d9488' }}>{'🔗 ' + (section.title || '跨域链接')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.length > 0 && (
             <div>
               {section.items.map((item: any, i: number) => (
@@ -383,7 +415,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'model-intro':
       return (
         <div className="detail-section" key={index} style={{ background: '#f0f9ff' }}>
-          <h3 style={{ color: '#0369a1' }}>{section.title || '🎯 模型定义'}</h3>
+          <h3 style={{ color: '#0369a1' }}>{section.title || '🎯 模型定义'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#0c4a6e' }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content) }} />
           {section.formulas?.map((f: string, i: number) => (
@@ -395,7 +427,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'model-principle':
       return (
         <div className="detail-section" key={index} style={{ background: '#fefce8' }}>
-          <h3 style={{ color: '#d97706' }}>{section.title || '⚙️ 核心原理'}</h3>
+          <h3 style={{ color: '#d97706' }}>{section.title || '⚙️ 核心原理'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <div style={{ fontSize: 14, lineHeight: 1.8, color: '#92400e' }}>
             {(section.content || '').split('\n').map((line: string, i: number) => (
               line.trim() ? <p key={i} style={{ marginBottom: 6 }} dangerouslySetInnerHTML={{ __html: renderFormula(line) }} /> : null
@@ -411,7 +443,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'tips':
       return (
         <div className="detail-section" key={index} style={{ background: section.type === 'recognition' ? '#fdf4ff' : '#f0fdf4' }}>
-          <h3 style={{ color: section.type === 'recognition' ? '#a21caf' : '#16a34a' }}>{section.title || '🔍 辨识特征'}</h3>
+          <h3 style={{ color: section.type === 'recognition' ? '#a21caf' : '#16a34a' }}>{section.title || '🔍 辨识特征'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <ul style={{ paddingLeft: 20, lineHeight: 2.4 }}>
             {section.items?.map((item: string, i: number) => (
               <li key={i} style={{ fontSize: 14, color: '#374151' }}
@@ -424,7 +456,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'standard-steps':
       return (
         <div className="detail-section" key={index} style={{ background: '#f8fafc' }}>
-          <h3 style={{ color: '#1e40af' }}>{section.title || '📝 解题通法'}</h3>
+          <h3 style={{ color: '#1e40af' }}>{section.title || '📝 解题通法'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.length > 0 && (
             <div style={{ counterReset: 'step' }}>
               {section.items.map((item: string, i: number) => {
@@ -459,7 +491,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'variant':
       return (
         <div className="detail-section" key={index}>
-          <h3 style={{ color: '#7c3aed' }}>{'🔁 ' + (section.title || '变式拓展')}</h3>
+          <h3 style={{ color: '#7c3aed' }}>{'🔁 ' + (section.title || '变式拓展')} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           {section.items?.map((ex: any, i: number) => (
             <div key={i} className="practice-question" style={{ borderLeft: '3px solid #7c3aed', paddingLeft: 12, marginBottom: 12, background: '#faf5ff' }}>
               <p style={{ fontWeight: 600, marginBottom: 8, fontSize: 14, color: '#4c1d95' }}
@@ -479,7 +511,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'image':
       return (
         <div className="detail-section" key={index}>
-          <h3>{section.title || '🖼️ 配图'}</h3>
+          <h3>{section.title || '🖼️ 配图'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <ModelImage
             src={section.src}
             images={section.images}
@@ -496,7 +528,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     case 'video':
       return (
         <div className="detail-section" key={index}>
-          <h3>{section.title || '🎬 视频'}</h3>
+          <h3>{section.title || '🎬 视频'} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <ModelVideo video={section.video || { url: section.src }} title={section.title} />
           {section.content && (
             <div style={{ fontSize: 14, lineHeight: 1.8, color: '#374151', marginTop: 8 }}
@@ -508,7 +540,7 @@ function SectionRenderer({ section, index }: { section: any; index: number }) {
     default:
       return (
         <div className="detail-section" key={index}>
-          <h3>{section.title || ''}</h3>
+          <h3>{section.title || ''} <TTSButton text={extractSectionText(section)} className="tts-section-btn" /></h3>
           <div style={{ fontSize: 14, lineHeight: 1.8 }}
             dangerouslySetInnerHTML={{ __html: renderFormula(section.content || '') }} />
         </div>

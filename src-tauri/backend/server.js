@@ -18081,17 +18081,17 @@ var require_router = __commonJS({
     var toString3 = Object.prototype.toString;
     var proto = module2.exports = function(options) {
       var opts = options || {};
-      function router12(req, res, next) {
-        router12.handle(req, res, next);
+      function router14(req, res, next) {
+        router14.handle(req, res, next);
       }
-      setPrototypeOf(router12, proto);
-      router12.params = {};
-      router12._params = [];
-      router12.caseSensitive = opts.caseSensitive;
-      router12.mergeParams = opts.mergeParams;
-      router12.strict = opts.strict;
-      router12.stack = [];
-      return router12;
+      setPrototypeOf(router14, proto);
+      router14.params = {};
+      router14._params = [];
+      router14.caseSensitive = opts.caseSensitive;
+      router14.mergeParams = opts.mergeParams;
+      router14.strict = opts.strict;
+      router14.stack = [];
+      return router14;
     };
     proto.param = function param(name, fn) {
       if (typeof name === "function") {
@@ -18501,10 +18501,10 @@ var require_view = __commonJS({
     var debug = require_src()("express:view");
     var path2 = require("path");
     var fs3 = require("fs");
-    var dirname3 = path2.dirname;
+    var dirname4 = path2.dirname;
     var basename = path2.basename;
     var extname = path2.extname;
-    var join2 = path2.join;
+    var join3 = path2.join;
     var resolve = path2.resolve;
     module2.exports = View;
     function View(name, options) {
@@ -18540,7 +18540,7 @@ var require_view = __commonJS({
       for (var i = 0; i < roots.length && !path3; i++) {
         var root = roots[i];
         var loc = resolve(root, name);
-        var dir = dirname3(loc);
+        var dir = dirname4(loc);
         var file = basename(loc);
         path3 = this.resolve(dir, file);
       }
@@ -18552,12 +18552,12 @@ var require_view = __commonJS({
     };
     View.prototype.resolve = function resolve2(dir, file) {
       var ext = this.ext;
-      var path3 = join2(dir, file);
+      var path3 = join3(dir, file);
       var stat = tryStat(path3);
       if (stat && stat.isFile()) {
         return path3;
       }
-      path3 = join2(dir, basename(file, ext), "index" + ext);
+      path3 = join3(dir, basename(file, ext), "index" + ext);
       stat = tryStat(path3);
       if (stat && stat.isFile()) {
         return path3;
@@ -19190,7 +19190,7 @@ var require_send = __commonJS({
     var Stream = require("stream");
     var util4 = require("util");
     var extname = path2.extname;
-    var join2 = path2.join;
+    var join3 = path2.join;
     var normalize = path2.normalize;
     var resolve = path2.resolve;
     var sep2 = path2.sep;
@@ -19409,7 +19409,7 @@ var require_send = __commonJS({
           return res;
         }
         parts = path3.split(sep2);
-        path3 = normalize(join2(root, path3));
+        path3 = normalize(join3(root, path3));
       } else {
         if (UP_PATH_REGEXP.test(path3)) {
           debug('malicious path "%s"', path3);
@@ -19544,7 +19544,7 @@ var require_send = __commonJS({
           if (err) return self2.onStatError(err);
           return self2.error(404);
         }
-        var p = join2(path3, self2._index[i]);
+        var p = join3(path3, self2._index[i]);
         debug('stat "%s"', p);
         fs3.stat(p, function(err2, stat) {
           if (err2) return next(err2);
@@ -20684,7 +20684,7 @@ var require_application = __commonJS({
   "node_modules/express/lib/application.js"(exports2, module2) {
     "use strict";
     var finalhandler = require_finalhandler();
-    var Router12 = require_router();
+    var Router14 = require_router();
     var methods = require_methods();
     var middleware = require_init();
     var query = require_query();
@@ -20749,7 +20749,7 @@ var require_application = __commonJS({
     };
     app2.lazyrouter = function lazyrouter() {
       if (!this._router) {
-        this._router = new Router12({
+        this._router = new Router14({
           caseSensitive: this.enabled("case sensitive routing"),
           strict: this.enabled("strict routing")
         });
@@ -20758,17 +20758,17 @@ var require_application = __commonJS({
       }
     };
     app2.handle = function handle(req, res, callback) {
-      var router12 = this._router;
+      var router14 = this._router;
       var done = callback || finalhandler(req, res, {
         env: this.get("env"),
         onerror: logerror.bind(this)
       });
-      if (!router12) {
+      if (!router14) {
         debug("no routes defined on app");
         done();
         return;
       }
-      router12.handle(req, res, done);
+      router14.handle(req, res, done);
     };
     app2.use = function use(fn) {
       var offset = 0;
@@ -20788,15 +20788,15 @@ var require_application = __commonJS({
         throw new TypeError("app.use() requires a middleware function");
       }
       this.lazyrouter();
-      var router12 = this._router;
+      var router14 = this._router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router12.use(path2, fn2);
+          return router14.use(path2, fn2);
         }
         debug(".use app under %s", path2);
         fn2.mountpath = path2;
         fn2.parent = this;
-        router12.use(path2, function mounted_app(req, res, next) {
+        router14.use(path2, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             setPrototypeOf(req, orig.request);
@@ -22613,7 +22613,7 @@ var require_express = __commonJS({
     var mixin = require_merge_descriptors();
     var proto = require_application();
     var Route = require_route();
-    var Router12 = require_router();
+    var Router14 = require_router();
     var req = require_request();
     var res = require_response();
     exports2 = module2.exports = createApplication;
@@ -22636,7 +22636,7 @@ var require_express = __commonJS({
     exports2.request = req;
     exports2.response = res;
     exports2.Route = Route;
-    exports2.Router = Router12;
+    exports2.Router = Router14;
     exports2.json = bodyParser.json;
     exports2.query = require_query();
     exports2.raw = bodyParser.raw;
@@ -40326,7 +40326,7 @@ var require_buffer_list = __commonJS({
         }
       }, {
         key: "join",
-        value: function join2(s) {
+        value: function join3(s) {
           if (this.length === 0) return "";
           var p = this.head;
           var ret = "" + p.data;
@@ -45637,7 +45637,7 @@ var require_buffer_list2 = __commonJS({
         }
       }, {
         key: "join",
-        value: function join2(s) {
+        value: function join3(s) {
           if (this.length === 0) return "";
           var p = this.head;
           var ret = "" + p.data;
@@ -51284,7 +51284,7 @@ var require_lodash8 = __commonJS({
           }
           return mapped.length && mapped[0] === arrays[0] ? baseIntersection(mapped, undefined2, comparator) : [];
         });
-        function join2(array, separator) {
+        function join3(array, separator) {
           return array == null ? "" : nativeJoin.call(array, separator);
         }
         function last(array) {
@@ -53208,7 +53208,7 @@ var require_lodash8 = __commonJS({
         lodash.isUndefined = isUndefined2;
         lodash.isWeakMap = isWeakMap;
         lodash.isWeakSet = isWeakSet;
-        lodash.join = join2;
+        lodash.join = join3;
         lodash.kebabCase = kebabCase;
         lodash.last = last;
         lodash.lastIndexOf = lastIndexOf;
@@ -61114,7 +61114,7 @@ var require_Parser = __commonJS({
 });
 
 // src/index.ts
-var import_express12 = __toESM(require_express2(), 1);
+var import_express14 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 init_config();
 
@@ -72443,6 +72443,432 @@ router11.use((err, _req, res, _next) => {
 });
 var upload_default = router11;
 
+// src/routes/tts.ts
+var import_express12 = __toESM(require_express2(), 1);
+var import_child_process = require("child_process");
+var import_fs2 = require("fs");
+var import_path3 = require("path");
+var import_url3 = require("url");
+
+// src/utils/ttsCache.ts
+var TTSCache = class {
+  cache;
+  maxSize;
+  constructor(maxSize = 100) {
+    this.cache = /* @__PURE__ */ new Map();
+    this.maxSize = maxSize;
+  }
+  get(text) {
+    const key = this.normalize(text);
+    const val = this.cache.get(key);
+    if (val !== void 0) {
+      this.cache.delete(key);
+      this.cache.set(key, val);
+    }
+    return val;
+  }
+  set(text, audio) {
+    const key = this.normalize(text);
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    } else if (this.cache.size >= this.maxSize) {
+      const oldest = this.cache.keys().next();
+      if (!oldest.done) this.cache.delete(oldest.value);
+    }
+    this.cache.set(key, audio);
+  }
+  normalize(text) {
+    return text.trim().replace(/\s+/g, " ");
+  }
+};
+var ttsCache = new TTSCache(200);
+
+// src/routes/tts.ts
+var import_meta2 = {};
+var __dirname2 = (0, import_path3.dirname)((0, import_url3.fileURLToPath)(import_meta2.url));
+var router12 = (0, import_express12.Router)();
+var ZH_VOICES = [
+  // ── 普通话 ──
+  { voice: "zh-CN-XiaoxiaoNeural", label: "\u6653\u6653", gender: "female", category: "mandarin" },
+  { voice: "zh-CN-XiaoyiNeural", label: "\u6653\u4F9D", gender: "female", category: "mandarin" },
+  { voice: "zh-CN-YunjianNeural", label: "\u4E91\u5065", gender: "male", category: "mandarin" },
+  { voice: "zh-CN-YunxiNeural", label: "\u4E91\u5E0C", gender: "male", category: "mandarin" },
+  { voice: "zh-CN-YunxiaNeural", label: "\u4E91\u590F", gender: "male", category: "mandarin" },
+  { voice: "zh-CN-YunyangNeural", label: "\u4E91\u626C", gender: "male", category: "mandarin" },
+  // ── 方言 ──
+  { voice: "zh-CN-liaoning-XiaobeiNeural", label: "\u5C0F\u5317\uFF08\u8FBD\u5B81\uFF09", gender: "female", category: "dialect" },
+  { voice: "zh-CN-shaanxi-XiaoniNeural", label: "\u5C0F\u59AE\uFF08\u9655\u897F\uFF09", gender: "female", category: "dialect" },
+  // ── 粤语 ──
+  { voice: "zh-HK-HiuGaaiNeural", label: "\u6653\u4F73", gender: "female", category: "cantonese" },
+  { voice: "zh-HK-HiuMaanNeural", label: "\u6653\u6587", gender: "female", category: "cantonese" },
+  { voice: "zh-HK-WanLungNeural", label: "\u4E91\u9F99", gender: "male", category: "cantonese" },
+  // ── 台湾国语 ──
+  { voice: "zh-TW-HsiaoChenNeural", label: "\u6653\u771F", gender: "female", category: "taiwanese" },
+  { voice: "zh-TW-HsiaoYuNeural", label: "\u6653\u96E8", gender: "female", category: "taiwanese" },
+  { voice: "zh-TW-YunJheNeural", label: "\u4E91\u54F2", gender: "male", category: "taiwanese" }
+];
+var DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural";
+router12.post("/", async (req, res, next) => {
+  try {
+    const { text, voice, rate = 1 } = req.body;
+    if (!text || !text.trim()) {
+      res.status(400).json({ code: 400, msg: "text is required", data: null });
+      return;
+    }
+    const cacheKey = `${voice || DEFAULT_VOICE}::${text}`;
+    const cached = ttsCache.get(cacheKey);
+    if (cached) {
+      res.set("Content-Type", "audio/mpeg");
+      res.set("X-TTS-Cache", "hit");
+      res.send(cached);
+      return;
+    }
+    const selectedVoice = ZH_VOICES.find((v) => v.voice === voice)?.voice || DEFAULT_VOICE;
+    const tmpDir = (0, import_path3.join)(__dirname2, "../../.tts-cache");
+    if (!(0, import_fs2.existsSync)(tmpDir)) (0, import_fs2.mkdirSync)(tmpDir, { recursive: true });
+    const tmpFile = (0, import_path3.join)(tmpDir, `tts-${Date.now()}-${Math.random().toString(36).slice(2)}.mp3`);
+    const rateParam = rate !== 1 ? `--rate=${rate > 1 ? "+" : ""}${Math.round((rate - 1) * 100)}%` : "";
+    const cmd = [
+      "edge-tts",
+      `--voice "${selectedVoice}"`,
+      `--text "${text.replace(/"/g, '\\"').replace(/\n/g, " ")}"`,
+      `--write-media "${tmpFile}"`,
+      rateParam
+    ].filter(Boolean).join(" ");
+    (0, import_child_process.execSync)(cmd, { timeout: 3e4 });
+    const audioBuffer = (0, import_fs2.readFileSync)(tmpFile);
+    ttsCache.set(cacheKey, audioBuffer);
+    try {
+      (0, import_fs2.unlinkSync)(tmpFile);
+    } catch {
+    }
+    res.set("Content-Type", "audio/mpeg");
+    res.set("X-TTS-Cache", "miss");
+    res.send(audioBuffer);
+  } catch (e) {
+    res.status(500).json({
+      code: 500,
+      msg: "TTS generation failed: " + (e?.message || "unknown error"),
+      data: null
+    });
+  }
+});
+router12.get("/voices", (_req, res) => {
+  res.json({ code: 200, msg: "ok", data: ZH_VOICES });
+});
+var tts_default = router12;
+
+// src/routes/dictation.ts
+var import_express13 = __toESM(require_express2(), 1);
+
+// src/routes/dictation-words.ts
+var dictationWords = [
+  // ── 基础词汇（初中） ──
+  { id: "w001", word: "apple", phonetic: "/\u02C8\xE6pl/", chinese: "\u82F9\u679C", sentence: "I eat an apple every day.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w002", word: "book", phonetic: "/b\u028Ak/", chinese: "\u4E66", sentence: "This is my favorite book.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w003", word: "cat", phonetic: "/k\xE6t/", chinese: "\u732B", sentence: "The cat is sleeping.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w004", word: "dog", phonetic: "/d\u0252\u0261/", chinese: "\u72D7", sentence: "I have a pet dog.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w005", word: "fish", phonetic: "/f\u026A\u0283/", chinese: "\u9C7C", sentence: "There are many fish in the river.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w006", word: "girl", phonetic: "/\u0261\u025C\u02D0rl/", chinese: "\u5973\u5B69", sentence: "The girl is reading a book.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w007", word: "happy", phonetic: "/\u02C8h\xE6pi/", chinese: "\u5FEB\u4E50\u7684", sentence: "She looks very happy.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w008", word: "jump", phonetic: "/d\u0292\u028Cmp/", chinese: "\u8DF3", sentence: "The rabbit can jump high.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w009", word: "king", phonetic: "/k\u026A\u014B/", chinese: "\u56FD\u738B", sentence: "The king lives in a castle.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w010", word: "lamp", phonetic: "/l\xE6mp/", chinese: "\u706F", sentence: "Turn on the lamp, please.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w011", word: "milk", phonetic: "/m\u026Alk/", chinese: "\u725B\u5976", sentence: "I drink milk every morning.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w012", word: "name", phonetic: "/ne\u026Am/", chinese: "\u540D\u5B57", sentence: "What is your name?", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w013", word: "orange", phonetic: "/\u02C8\u0252r\u026And\u0292/", chinese: "\u6A59\u5B50", sentence: "Oranges are rich in vitamin C.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w014", word: "pencil", phonetic: "/\u02C8pensl/", chinese: "\u94C5\u7B14", sentence: "Write with a pencil.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w015", word: "queen", phonetic: "/kwi\u02D0n/", chinese: "\u5973\u738B", sentence: "The queen wore a crown.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w016", word: "river", phonetic: "/\u02C8r\u026Av\u0259r/", chinese: "\u6CB3\u6D41", sentence: "The river flows to the sea.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w017", word: "sunny", phonetic: "/\u02C8s\u028Cni/", chinese: "\u6674\u6717\u7684", sentence: "It is a sunny day.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w018", word: "table", phonetic: "/\u02C8te\u026Abl/", chinese: "\u684C\u5B50", sentence: "Put it on the table.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w019", word: "umbrella", phonetic: "/\u028Cm\u02C8brel\u0259/", chinese: "\u96E8\u4F1E", sentence: "Take an umbrella, it might rain.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  { id: "w020", word: "water", phonetic: "/\u02C8w\u0254\u02D0t\u0259r/", chinese: "\u6C34", sentence: "I need a glass of water.", difficulty: 1, domain: "\u57FA\u7840\u8BCD\u6C47" },
+  // ── 常用动词 ──
+  { id: "w021", word: "begin", phonetic: "/b\u026A\u02C8\u0261\u026An/", chinese: "\u5F00\u59CB", sentence: "Let us begin the class.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w022", word: "choose", phonetic: "/t\u0283u\u02D0z/", chinese: "\u9009\u62E9", sentence: "You need to choose one.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w023", word: "decide", phonetic: "/d\u026A\u02C8sa\u026Ad/", chinese: "\u51B3\u5B9A", sentence: "I decided to study harder.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w024", word: "enjoy", phonetic: "/\u026An\u02C8d\u0292\u0254\u026A/", chinese: "\u4EAB\u53D7", sentence: "I enjoy reading books.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w025", word: "follow", phonetic: "/\u02C8f\u0252lo\u028A/", chinese: "\u8DDF\u968F", sentence: "Follow me, please.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w026", word: "finish", phonetic: "/\u02C8f\u026An\u026A\u0283/", chinese: "\u5B8C\u6210", sentence: "I finished my homework.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w027", word: "happen", phonetic: "/\u02C8h\xE6p\u0259n/", chinese: "\u53D1\u751F", sentence: "What happened yesterday?", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w028", word: "imagine", phonetic: "/\u026A\u02C8m\xE6d\u0292\u026An/", chinese: "\u60F3\u8C61", sentence: "Imagine a world without war.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w029", word: "improve", phonetic: "/\u026Am\u02C8pru\u02D0v/", chinese: "\u63D0\u9AD8", sentence: "Practice helps improve your skills.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w030", word: "invite", phonetic: "/\u026An\u02C8va\u026At/", chinese: "\u9080\u8BF7", sentence: "I invited her to the party.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w031", word: "mention", phonetic: "/\u02C8men\u0283n/", chinese: "\u63D0\u53CA", sentence: "He mentioned your name.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w032", word: "notice", phonetic: "/\u02C8no\u028At\u026As/", chinese: "\u6CE8\u610F\u5230", sentence: "Did you notice the change?", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w033", word: "offer", phonetic: "/\u02C8\u0252f\u0259r/", chinese: "\u63D0\u4F9B", sentence: "He offered me a job.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w034", word: "prepare", phonetic: "/pr\u026A\u02C8per/", chinese: "\u51C6\u5907", sentence: "I need to prepare for the exam.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w035", word: "receive", phonetic: "/r\u026A\u02C8si\u02D0v/", chinese: "\u6536\u5230", sentence: "I received your letter.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w036", word: "remember", phonetic: "/r\u026A\u02C8memb\u0259r/", chinese: "\u8BB0\u4F4F", sentence: "Remember to lock the door.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w037", word: "suggest", phonetic: "/s\u0259\u02C8d\u0292est/", chinese: "\u5EFA\u8BAE", sentence: "I suggest you try again.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w038", word: "support", phonetic: "/s\u0259\u02C8p\u0254\u02D0rt/", chinese: "\u652F\u6301", sentence: "My family supports me.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w039", word: "wonder", phonetic: "/\u02C8w\u028Cnd\u0259r/", chinese: "\u60F3\u77E5\u9053", sentence: "I wonder what will happen.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w040", word: "achieve", phonetic: "/\u0259\u02C8t\u0283i\u02D0v/", chinese: "\u5B9E\u73B0", sentence: "She achieved her goal.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  // ── 形容词 ──
+  { id: "w041", word: "beautiful", phonetic: "/\u02C8bju\u02D0t\u026Afl/", chinese: "\u7F8E\u4E3D\u7684", sentence: "The sunset is beautiful.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w042", word: "careful", phonetic: "/\u02C8kerfl/", chinese: "\u5C0F\u5FC3\u7684", sentence: "Be careful when crossing the road.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w043", word: "dangerous", phonetic: "/\u02C8de\u026And\u0292\u0259r\u0259s/", chinese: "\u5371\u9669\u7684", sentence: "This road is dangerous.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w044", word: "difficult", phonetic: "/\u02C8d\u026Af\u026Ak\u0259lt/", chinese: "\u56F0\u96BE\u7684", sentence: "The exam was difficult.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w045", word: "excellent", phonetic: "/\u02C8eks\u0259l\u0259nt/", chinese: "\u4F18\u79C0\u7684", sentence: "You did an excellent job!", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w046", word: "famous", phonetic: "/\u02C8fe\u026Am\u0259s/", chinese: "\u8457\u540D\u7684", sentence: "This city is famous for its food.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w047", word: "generous", phonetic: "/\u02C8d\u0292en\u0259r\u0259s/", chinese: "\u6177\u6168\u7684", sentence: "He is a generous person.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w048", word: "honest", phonetic: "/\u02C8\u0252n\u026Ast/", chinese: "\u8BDA\u5B9E\u7684", sentence: "Always be honest.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w049", word: "important", phonetic: "/\u026Am\u02C8p\u0254\u02D0rtnt/", chinese: "\u91CD\u8981\u7684", sentence: "Education is important.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w050", word: "interesting", phonetic: "/\u02C8\u026Antr\u0259st\u026A\u014B/", chinese: "\u6709\u8DA3\u7684", sentence: "This book is very interesting.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w051", word: "necessary", phonetic: "/\u02C8nes\u0259seri/", chinese: "\u5FC5\u8981\u7684", sentence: "Water is necessary for life.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w052", word: "popular", phonetic: "/\u02C8p\u0251\u02D0pj\u0259l\u0259r/", chinese: "\u6D41\u884C\u7684", sentence: "This song is very popular.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w053", word: "possible", phonetic: "/\u02C8p\u0251\u02D0s\u0259bl/", chinese: "\u53EF\u80FD\u7684", sentence: "Anything is possible.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w054", word: "responsible", phonetic: "/r\u026A\u02C8sp\u0251\u02D0ns\u0259bl/", chinese: "\u8D1F\u8D23\u7684", sentence: "Be responsible for your actions.", difficulty: 4, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w055", word: "successful", phonetic: "/s\u0259k\u02C8sesfl/", chinese: "\u6210\u529F\u7684", sentence: "She is a successful writer.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w056", word: "terrible", phonetic: "/\u02C8ter\u0259bl/", chinese: "\u7CDF\u7CD5\u7684", sentence: "The weather is terrible today.", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w057", word: "valuable", phonetic: "/\u02C8v\xE6lju\u0259bl/", chinese: "\u6709\u4EF7\u503C\u7684", sentence: "This experience is valuable.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w058", word: "wonderful", phonetic: "/\u02C8w\u028Cnd\u0259rfl/", chinese: "\u7CBE\u5F69\u7684", sentence: "What a wonderful day!", difficulty: 2, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w059", word: "comfortable", phonetic: "/\u02C8k\u028Cmft\u0259bl/", chinese: "\u8212\u9002\u7684", sentence: "This bed is very comfortable.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  { id: "w060", word: "essential", phonetic: "/\u026A\u02C8sen\u0283l/", chinese: "\u672C\u8D28\u7684", sentence: "Sleep is essential for health.", difficulty: 3, domain: "\u5E38\u7528\u5F62\u5BB9\u8BCD" },
+  // ── 抽象名词 ──
+  { id: "w061", word: "ability", phonetic: "/\u0259\u02C8b\u026Al\u0259ti/", chinese: "\u80FD\u529B", sentence: "He has the ability to succeed.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w062", word: "advantage", phonetic: "/\u0259d\u02C8v\xE6nt\u026Ad\u0292/", chinese: "\u4F18\u52BF", sentence: "Practice gives you an advantage.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w063", word: "attention", phonetic: "/\u0259\u02C8ten\u0283n/", chinese: "\u6CE8\u610F", sentence: "Pay attention to the details.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w064", word: "challenge", phonetic: "/\u02C8t\u0283\xE6l\u026And\u0292/", chinese: "\u6311\u6218", sentence: "Life is full of challenges.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w065", word: "condition", phonetic: "/k\u0259n\u02C8d\u026A\u0283n/", chinese: "\u6761\u4EF6", sentence: "Hard work is a condition for success.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w066", word: "difference", phonetic: "/\u02C8d\u026Afr\u0259ns/", chinese: "\u4E0D\u540C", sentence: "There is a big difference.", difficulty: 2, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w067", word: "education", phonetic: "/\u02CCed\u0292u\u02C8ke\u026A\u0283n/", chinese: "\u6559\u80B2", sentence: "Education changes lives.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w068", word: "experience", phonetic: "/\u026Ak\u02C8sp\u026Ari\u0259ns/", chinese: "\u7ECF\u5386", sentence: "Travel is a great experience.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w069", word: "freedom", phonetic: "/\u02C8fri\u02D0d\u0259m/", chinese: "\u81EA\u7531", sentence: "Everyone loves freedom.", difficulty: 2, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w070", word: "knowledge", phonetic: "/\u02C8n\u0252l\u026Ad\u0292/", chinese: "\u77E5\u8BC6", sentence: "Knowledge is power.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w071", word: "opportunity", phonetic: "/\u02CC\u0252p\u0259r\u02C8tju\u02D0n\u0259ti/", chinese: "\u673A\u4F1A", sentence: "Dont miss this opportunity.", difficulty: 4, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w072", word: "practice", phonetic: "/\u02C8pr\xE6kt\u026As/", chinese: "\u7EC3\u4E60", sentence: "Practice makes perfect.", difficulty: 2, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w073", word: "relationship", phonetic: "/r\u026A\u02C8le\u026A\u0283n\u0283\u026Ap/", chinese: "\u5173\u7CFB", sentence: "Build good relationships.", difficulty: 4, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w074", word: "situation", phonetic: "/\u02CCs\u026At\u0283u\u02C8e\u026A\u0283n/", chinese: "\u60C5\u51B5", sentence: "This is a difficult situation.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w075", word: "tradition", phonetic: "/tr\u0259\u02C8d\u026A\u0283n/", chinese: "\u4F20\u7EDF", sentence: "We should keep our traditions.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w076", word: "university", phonetic: "/\u02CCju\u02D0n\u026A\u02C8v\u025C\u02D0rs\u0259ti/", chinese: "\u5927\u5B66", sentence: "He wants to go to university.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w077", word: "volunteer", phonetic: "/\u02CCv\u0252l\u0259n\u02C8t\u026Ar/", chinese: "\u5FD7\u613F\u8005", sentence: "She works as a volunteer.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w078", word: "adventure", phonetic: "/\u0259d\u02C8vent\u0283\u0259r/", chinese: "\u5192\u9669", sentence: "Life is an adventure.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w079", word: "community", phonetic: "/k\u0259\u02C8mju\u02D0n\u0259ti/", chinese: "\u793E\u533A", sentence: "Our community is very friendly.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  { id: "w080", word: "environment", phonetic: "/\u026An\u02C8va\u026Ar\u0259nm\u0259nt/", chinese: "\u73AF\u5883", sentence: "Protect the environment.", difficulty: 3, domain: "\u62BD\u8C61\u540D\u8BCD" },
+  // ── 高频动词（继续） ──
+  { id: "w081", word: "appreciate", phonetic: "/\u0259\u02C8pri\u02D0\u0283ie\u026At/", chinese: "\u611F\u6FC0", sentence: "I appreciate your help.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w082", word: "communicate", phonetic: "/k\u0259\u02C8mju\u02D0n\u026Ake\u026At/", chinese: "\u4EA4\u6D41", sentence: "We communicate every day.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w083", word: "concentrate", phonetic: "/\u02C8k\u0251\u02D0nsntre\u026At/", chinese: "\u96C6\u4E2D", sentence: "Concentrate on your studies.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w084", word: "demonstrate", phonetic: "/\u02C8dem\u0259nstre\u026At/", chinese: "\u5C55\u793A", sentence: "Let me demonstrate how it works.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w085", word: "disappear", phonetic: "/\u02CCd\u026As\u0259\u02C8p\u026Ar/", chinese: "\u6D88\u5931", sentence: "The sun disappeared behind clouds.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w086", word: "encourage", phonetic: "/\u026An\u02C8k\u025C\u02D0r\u026Ad\u0292/", chinese: "\u9F13\u52B1", sentence: "Teachers encourage students.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w087", word: "examine", phonetic: "/\u026A\u0261\u02C8z\xE6m\u026An/", chinese: "\u68C0\u67E5", sentence: "The doctor examined me.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w088", word: "guarantee", phonetic: "/\u02CC\u0261\xE6r\u0259n\u02C8ti\u02D0/", chinese: "\u4FDD\u8BC1", sentence: "I cannot guarantee success.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w089", word: "identify", phonetic: "/a\u026A\u02C8dent\u026Afa\u026A/", chinese: "\u8BC6\u522B", sentence: "Can you identify the problem?", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w090", word: "influence", phonetic: "/\u02C8\u026Anflu\u0259ns/", chinese: "\u5F71\u54CD", sentence: "Books can influence our thinking.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w091", word: "introduce", phonetic: "/\u02CC\u026Antr\u0259\u02C8du\u02D0s/", chinese: "\u4ECB\u7ECD", sentence: "Let me introduce my friend.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w092", word: "investigate", phonetic: "/\u026An\u02C8vest\u026A\u0261e\u026At/", chinese: "\u8C03\u67E5", sentence: "The police are investigating.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w093", word: "organize", phonetic: "/\u02C8\u0254\u02D0r\u0261\u0259na\u026Az/", chinese: "\u7EC4\u7EC7", sentence: "We need to organize the event.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w094", word: "participate", phonetic: "/p\u0251\u02D0r\u02C8t\u026As\u026Ape\u026At/", chinese: "\u53C2\u4E0E", sentence: "Everyone should participate.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w095", word: "recommend", phonetic: "/\u02CCrek\u0259\u02C8mend/", chinese: "\u63A8\u8350", sentence: "I recommend this book.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w096", word: "separate", phonetic: "/\u02C8sep\u0259re\u026At/", chinese: "\u5206\u5F00", sentence: "Separate the eggs carefully.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w097", word: "struggle", phonetic: "/\u02C8str\u028C\u0261l/", chinese: "\u6323\u624E", sentence: "He struggled with the problem.", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w098", word: "translate", phonetic: "/tr\xE6nz\u02C8le\u026At/", chinese: "\u7FFB\u8BD1", sentence: "Can you translate this sentence?", difficulty: 3, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w099", word: "understand", phonetic: "/\u02CC\u028Cnd\u0259r\u02C8st\xE6nd/", chinese: "\u7406\u89E3", sentence: "I understand your feelings.", difficulty: 2, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  { id: "w100", word: "communicate", phonetic: "/k\u0259\u02C8mju\u02D0n\u026Ake\u026At/", chinese: "\u6C9F\u901A", sentence: "It is important to communicate.", difficulty: 4, domain: "\u5E38\u7528\u52A8\u8BCD" },
+  // ── 书面语/学术词汇 ──
+  { id: "w101", word: "academic", phonetic: "/\u02CC\xE6k\u0259\u02C8dem\u026Ak/", chinese: "\u5B66\u672F\u7684", sentence: "She has an academic background.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w102", word: "analysis", phonetic: "/\u0259\u02C8n\xE6l\u0259s\u026As/", chinese: "\u5206\u6790", sentence: "We need a full analysis.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w103", word: "approach", phonetic: "/\u0259\u02C8pro\u028At\u0283/", chinese: "\u65B9\u6CD5", sentence: "Try a different approach.", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w104", word: "assess", phonetic: "/\u0259\u02C8ses/", chinese: "\u8BC4\u4F30", sentence: "Assess the situation first.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w105", word: "concept", phonetic: "/\u02C8k\u0251\u02D0nsept/", chinese: "\u6982\u5FF5", sentence: "This is a difficult concept.", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w106", word: "conclude", phonetic: "/k\u0259n\u02C8klu\u02D0d/", chinese: "\u603B\u7ED3", sentence: "What can we conclude?", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w107", word: "conflict", phonetic: "/\u02C8k\u0251\u02D0nfl\u026Akt/", chinese: "\u51B2\u7A81", sentence: "Avoid unnecessary conflict.", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w108", word: "consequence", phonetic: "/\u02C8k\u0251\u02D0ns\u026Akwens/", chinese: "\u540E\u679C", sentence: "Every action has consequences.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w109", word: "contribute", phonetic: "/k\u0259n\u02C8tr\u026Abju\u02D0t/", chinese: "\u8D21\u732E", sentence: "Everyone can contribute ideas.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w110", word: "debate", phonetic: "/d\u026A\u02C8be\u026At/", chinese: "\u8FA9\u8BBA", sentence: "We had a lively debate.", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w111", word: "define", phonetic: "/d\u026A\u02C8fa\u026An/", chinese: "\u5B9A\u4E49", sentence: "How do you define success?", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w112", word: "distinguish", phonetic: "/d\u026A\u02C8st\u026A\u014B\u0261w\u026A\u0283/", chinese: "\u533A\u5206", sentence: "Can you distinguish them?", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w113", word: "evaluate", phonetic: "/\u026A\u02C8v\xE6ljue\u026At/", chinese: "\u8BC4\u4EF7", sentence: "Evaluate the results carefully.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w114", word: "evidence", phonetic: "/\u02C8ev\u026Ad\u0259ns/", chinese: "\u8BC1\u636E", sentence: "We need more evidence.", difficulty: 3, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w115", word: "hypothesis", phonetic: "/ha\u026A\u02C8p\u0251\u02D0\u03B8\u0259s\u026As/", chinese: "\u5047\u8BBE", sentence: "Test your hypothesis.", difficulty: 5, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w116", word: "implement", phonetic: "/\u02C8\u026Ampl\u026Ament/", chinese: "\u5B9E\u65BD", sentence: "We need to implement the plan.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w117", word: "interpret", phonetic: "/\u026An\u02C8t\u025C\u02D0rpr\u026At/", chinese: "\u89E3\u91CA", sentence: "Interpret the data carefully.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w118", word: "phenomenon", phonetic: "/f\u0259\u02C8n\u0252m\u026An\u0259n/", chinese: "\u73B0\u8C61", sentence: "It is a natural phenomenon.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w119", word: "significant", phonetic: "/s\u026A\u0261\u02C8n\u026Af\u026Ak\u0259nt/", chinese: "\u91CD\u8981\u7684", sentence: "This is a significant discovery.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  { id: "w120", word: "theoretical", phonetic: "/\u02CC\u03B8i\u02D0\u0259\u02C8ret\u026Akl/", chinese: "\u7406\u8BBA\u7684", sentence: "It is a theoretical question.", difficulty: 4, domain: "\u5B66\u672F\u8BCD\u6C47" },
+  // ── 核心短语/搭配（整词记忆） ──
+  { id: "w121", word: "together", phonetic: "/t\u0259\u02C8\u0261e\xF0\u0259r/", chinese: "\u4E00\u8D77", sentence: "Let us work together.", difficulty: 2, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w122", word: "already", phonetic: "/\u0254\u02D0l\u02C8redi/", chinese: "\u5DF2\u7ECF", sentence: "I have already finished.", difficulty: 2, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w123", word: "although", phonetic: "/\u0254\u02D0l\u02C8\xF0o\u028A/", chinese: "\u867D\u7136", sentence: "Although it rained, we went out.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w124", word: "therefore", phonetic: "/\u02C8\xF0erf\u0254\u02D0r/", chinese: "\u56E0\u6B64", sentence: "I think, therefore I am.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w125", word: "however", phonetic: "/ha\u028A\u02C8ev\u0259r/", chinese: "\u7136\u800C", sentence: "It is cold; however, we went out.", difficulty: 2, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w126", word: "although", phonetic: "/\u0254\u02D0l\u02C8\xF0o\u028A/", chinese: "\u5C3D\u7BA1", sentence: "Although tired, she kept working.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w127", word: "immediately", phonetic: "/\u026A\u02C8mi\u02D0di\u0259tli/", chinese: "\u7ACB\u523B", sentence: "Come here immediately!", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w128", word: "especially", phonetic: "/\u026A\u02C8spe\u0283\u0259li/", chinese: "\u7279\u522B", sentence: "I love flowers, especially roses.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w129", word: "occasionally", phonetic: "/\u0259\u02C8ke\u026A\u0292n\u0259li/", chinese: "\u5076\u5C14", sentence: "We meet occasionally.", difficulty: 4, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w130", word: "eventually", phonetic: "/\u026A\u02C8vent\u0283u\u0259li/", chinese: "\u6700\u7EC8", sentence: "Eventually, we succeeded.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w131", word: "absolutely", phonetic: "/\u02C8\xE6bs\u0259lu\u02D0tli/", chinese: "\u7EDD\u5BF9", sentence: "You are absolutely right.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w132", word: "fortunately", phonetic: "/\u02C8f\u0254\u02D0rt\u0283\u0259n\u0259tli/", chinese: "\u5E78\u8FD0\u7684\u662F", sentence: "Fortunately, nobody got hurt.", difficulty: 4, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w133", word: "unfortunately", phonetic: "/\u028Cn\u02C8f\u0254\u02D0rt\u0283\u0259n\u0259tli/", chinese: "\u4E0D\u5E78\u7684\u662F", sentence: "Unfortunately, it rained.", difficulty: 4, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w134", word: "represent", phonetic: "/\u02CCrepr\u026A\u02C8zent/", chinese: "\u4EE3\u8868", sentence: "This symbol represents peace.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  { id: "w135", word: "throughout", phonetic: "/\u03B8ru\u02D0\u02C8a\u028At/", chinese: "\u8D2F\u7A7F", sentence: "It rained throughout the day.", difficulty: 3, domain: "\u5E38\u8003\u77ED\u8BED" },
+  // ── 科技/现代词汇 ──
+  { id: "w136", word: "technology", phonetic: "/tek\u02C8n\u0252l\u0259d\u0292i/", chinese: "\u6280\u672F", sentence: "Technology changes fast.", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w137", word: "internet", phonetic: "/\u02C8\u026Ant\u0259rnet/", chinese: "\u4E92\u8054\u7F51", sentence: "The internet connects the world.", difficulty: 2, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w138", word: "computer", phonetic: "/k\u0259m\u02C8pju\u02D0t\u0259r/", chinese: "\u8BA1\u7B97\u673A", sentence: "Computers are everywhere.", difficulty: 2, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w139", word: "software", phonetic: "/\u02C8s\u0252ftwer/", chinese: "\u8F6F\u4EF6", sentence: "Install the software first.", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w140", word: "database", phonetic: "/\u02C8de\u026At\u0259be\u026As/", chinese: "\u6570\u636E\u5E93", sentence: "Store data in a database.", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w141", word: "algorithm", phonetic: "/\u02C8\xE6l\u0261\u0259r\u026A\xF0\u0259m/", chinese: "\u7B97\u6CD5", sentence: "This algorithm is very fast.", difficulty: 4, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w142", word: "artificial", phonetic: "/\u02CC\u0251\u02D0rt\u026A\u02C8f\u026A\u0283l/", chinese: "\u4EBA\u5DE5\u7684", sentence: "Artificial intelligence is growing.", difficulty: 4, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w143", word: "digital", phonetic: "/\u02C8d\u026Ad\u0292\u026Atl/", chinese: "\u6570\u5B57\u7684", sentence: "We live in a digital world.", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w144", word: "network", phonetic: "/\u02C8netw\u025C\u02D0rk/", chinese: "\u7F51\u7EDC", sentence: "The network is down.", difficulty: 2, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w145", word: "security", phonetic: "/s\u026A\u02C8kj\u028Ar\u0259ti/", chinese: "\u5B89\u5168", sentence: "Online security is important.", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w146", word: "innovation", phonetic: "/\u02CC\u026An\u0259\u02C8ve\u026A\u0283n/", chinese: "\u521B\u65B0", sentence: "Innovation drives progress.", difficulty: 4, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w147", word: "platform", phonetic: "/\u02C8pl\xE6tf\u0254\u02D0rm/", chinese: "\u5E73\u53F0", sentence: "This is a great learning platform.", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w148", word: "program", phonetic: "/\u02C8pro\u028A\u0261r\xE6m/", chinese: "\u7A0B\u5E8F", sentence: "Write a computer program.", difficulty: 2, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w149", word: "data", phonetic: "/\u02C8de\u026At\u0259/", chinese: "\u6570\u636E", sentence: "We need more data.", difficulty: 2, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  { id: "w150", word: "function", phonetic: "/\u02C8f\u028C\u014Bk\u0283n/", chinese: "\u529F\u80FD", sentence: "What is the function of this button?", difficulty: 3, domain: "\u79D1\u6280\u8BCD\u6C47" },
+  // ── 进阶/高考高频 ──
+  { id: "w151", word: "accommodate", phonetic: "/\u0259\u02C8k\u0251\u02D0m\u0259de\u026At/", chinese: "\u5BB9\u7EB3", sentence: "The room can accommodate 50 people.", difficulty: 5, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w152", word: "accompany", phonetic: "/\u0259\u02C8k\u028Cmp\u0259ni/", chinese: "\u966A\u4F34", sentence: "I will accompany you.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w153", word: "accomplish", phonetic: "/\u0259\u02C8k\u0251\u02D0mpl\u026A\u0283/", chinese: "\u5B8C\u6210", sentence: "We accomplished our mission.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w154", word: "accurate", phonetic: "/\u02C8\xE6kj\u0259r\u0259t/", chinese: "\u51C6\u786E\u7684", sentence: "The information is accurate.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w155", word: "announce", phonetic: "/\u0259\u02C8na\u028Ans/", chinese: "\u5BA3\u5E03", sentence: "They announced the winner.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w156", word: "appropriate", phonetic: "/\u0259\u02C8pro\u028Apri\u0259t/", chinese: "\u9002\u5F53\u7684", sentence: "Wear appropriate clothing.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w157", word: "assume", phonetic: "/\u0259\u02C8su\u02D0m/", chinese: "\u5047\u8BBE", sentence: "I assume you are correct.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w158", word: "atmosphere", phonetic: "/\u02C8\xE6tm\u0259sf\u026Ar/", chinese: "\u6C14\u6C1B", sentence: "The atmosphere was tense.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w159", word: "available", phonetic: "/\u0259\u02C8ve\u026Al\u0259bl/", chinese: "\u53EF\u7528\u7684", sentence: "Is this seat available?", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w160", word: "awkward", phonetic: "/\u02C8\u0254\u02D0kw\u0259rd/", chinese: "\u5C34\u5C2C\u7684", sentence: "It was an awkward silence.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w161", word: "balance", phonetic: "/\u02C8b\xE6l\u0259ns/", chinese: "\u5E73\u8861", sentence: "Keep a balance of work and rest.", difficulty: 2, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w162", word: "benefit", phonetic: "/\u02C8ben\u026Af\u026At/", chinese: "\u76CA\u5904", sentence: "Exercise has many benefits.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w163", word: "campaign", phonetic: "/k\xE6m\u02C8pe\u026An/", chinese: "\u8FD0\u52A8", sentence: "The campaign was successful.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w164", word: "circumstance", phonetic: "/\u02C8s\u025C\u02D0rk\u0259mst\xE6ns/", chinese: "\u73AF\u5883", sentence: "Under the circumstances, we must be careful.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w165", word: "complain", phonetic: "/k\u0259m\u02C8ple\u026An/", chinese: "\u62B1\u6028", sentence: "Dont complain about everything.", difficulty: 2, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w166", word: "confident", phonetic: "/\u02C8k\u0251\u02D0nf\u026Ad\u0259nt/", chinese: "\u81EA\u4FE1\u7684", sentence: "Be confident in yourself.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w167", word: "conscious", phonetic: "/\u02C8k\u0251\u02D0n\u0283\u0259s/", chinese: "\u6709\u610F\u8BC6\u7684", sentence: "Be conscious of your actions.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w168", word: "curious", phonetic: "/\u02C8kj\u028Ari\u0259s/", chinese: "\u597D\u5947\u7684", sentence: "Children are naturally curious.", difficulty: 2, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w169", word: "desperate", phonetic: "/\u02C8desp\u0259r\u0259t/", chinese: "\u7EDD\u671B\u7684", sentence: "He was desperate for help.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w170", word: "determined", phonetic: "/d\u026A\u02C8t\u025C\u02D0rm\u026And/", chinese: "\u575A\u5B9A\u7684", sentence: "She is determined to succeed.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w171", word: "discipline", phonetic: "/\u02C8d\u026As\u0259pl\u026An/", chinese: "\u7EAA\u5F8B", sentence: "Discipline is the key to success.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w172", word: "discovery", phonetic: "/d\u026A\u02C8sk\u028Cv\u0259ri/", chinese: "\u53D1\u73B0", sentence: "This is an important discovery.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w173", word: "embarrassed", phonetic: "/\u026Am\u02C8b\xE6r\u0259st/", chinese: "\u5C34\u5C2C\u7684", sentence: "I felt embarrassed.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w174", word: "emotion", phonetic: "/\u026A\u02C8mo\u028A\u0283n/", chinese: "\u60C5\u611F", sentence: "She showed no emotion.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w175", word: "enthusiasm", phonetic: "/\u026An\u02C8\u03B8u\u02D0zi\xE6z\u0259m/", chinese: "\u70ED\u60C5", sentence: "She is full of enthusiasm.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w176", word: "establish", phonetic: "/\u026A\u02C8st\xE6bl\u026A\u0283/", chinese: "\u5EFA\u7ACB", sentence: "They established a new company.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w177", word: "explore", phonetic: "/\u026Ak\u02C8spl\u0254\u02D0r/", chinese: "\u63A2\u7D22", sentence: "We explored the forest.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w178", word: "fascinating", phonetic: "/\u02C8f\xE6s\u026Ane\u026At\u026A\u014B/", chinese: "\u8FF7\u4EBA\u7684", sentence: "The story is fascinating.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w179", word: "guilty", phonetic: "/\u02C8\u0261\u026Alti/", chinese: "\u5185\u759A\u7684", sentence: "I feel guilty about it.", difficulty: 2, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w180", word: "independent", phonetic: "/\u02CC\u026And\u026A\u02C8pend\u0259nt/", chinese: "\u72EC\u7ACB\u7684", sentence: "She is very independent.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w181", word: "jealous", phonetic: "/\u02C8d\u0292el\u0259s/", chinese: "\u5AC9\u5992\u7684", sentence: "Dont be jealous of others.", difficulty: 2, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w182", word: "literature", phonetic: "/\u02C8l\u026Atr\u0259t\u0283\u0259r/", chinese: "\u6587\u5B66", sentence: "I love English literature.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w183", word: "mischievous", phonetic: "/\u02C8m\u026Ast\u0283\u026Av\u0259s/", chinese: "\u6DD8\u6C14\u7684", sentence: "The mischievous boy hid my keys.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w184", word: "necessary", phonetic: "/\u02C8nes\u0259seri/", chinese: "\u5FC5\u8981\u7684", sentence: "Food is necessary for life.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w185", word: "negotiate", phonetic: "/n\u026A\u02C8\u0261o\u028A\u0283ie\u026At/", chinese: "\u8C08\u5224", sentence: "They need to negotiate a deal.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w186", word: "obvious", phonetic: "/\u02C8\u0251\u02D0bvi\u0259s/", chinese: "\u660E\u663E\u7684", sentence: "The answer is obvious.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w187", word: "occupy", phonetic: "/\u02C8\u0251\u02D0kjupa\u026A/", chinese: "\u5360\u636E", sentence: "The seat is occupied.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w188", word: "persuade", phonetic: "/p\u0259r\u02C8swe\u026Ad/", chinese: "\u8BF4\u670D", sentence: "I persuaded him to come.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w189", word: "possess", phonetic: "/p\u0259\u02C8zes/", chinese: "\u62E5\u6709", sentence: "She possesses great talent.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w190", word: "prejudice", phonetic: "/\u02C8pred\u0292ud\u026As/", chinese: "\u504F\u89C1", sentence: "Prejudice divides people.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w191", word: "privilege", phonetic: "/\u02C8pr\u026Av\u0259l\u026Ad\u0292/", chinese: "\u7279\u6743", sentence: "Education is a privilege.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w192", word: "recognize", phonetic: "/\u02C8rek\u0259\u0261na\u026Az/", chinese: "\u8BA4\u51FA", sentence: "I recognized her immediately.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w193", word: "reluctant", phonetic: "/r\u026A\u02C8l\u028Ckt\u0259nt/", chinese: "\u4E0D\u60C5\u613F\u7684", sentence: "He was reluctant to leave.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w194", word: "sacrifice", phonetic: "/\u02C8s\xE6kr\u026Afa\u026As/", chinese: "\u727A\u7272", sentence: "Parents sacrifice for their children.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w195", word: "sufficient", phonetic: "/s\u0259\u02C8f\u026A\u0283nt/", chinese: "\u5145\u8DB3\u7684", sentence: "We have sufficient time.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w196", word: "sympathy", phonetic: "/\u02C8s\u026Amp\u0259\u03B8i/", chinese: "\u540C\u60C5", sentence: "I have sympathy for her.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w197", word: "temporary", phonetic: "/\u02C8temp\u0259reri/", chinese: "\u4E34\u65F6\u7684", sentence: "This is only temporary.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w198", word: "thorough", phonetic: "/\u02C8\u03B8\u025C\u02D0ro\u028A/", chinese: "\u5F7B\u5E95\u7684", sentence: "Do a thorough check.", difficulty: 3, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w199", word: "tremendous", phonetic: "/tr\u0259\u02C8mend\u0259s/", chinese: "\u5DE8\u5927\u7684", sentence: "We made tremendous progress.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" },
+  { id: "w200", word: "vulnerable", phonetic: "/\u02C8v\u028Cln\u0259r\u0259bl/", chinese: "\u8106\u5F31\u7684", sentence: "Children are vulnerable.", difficulty: 4, domain: "\u8FDB\u9636\u8BCD\u6C47" }
+];
+
+// src/routes/dictation.ts
+var router13 = (0, import_express13.Router)();
+var sessions = /* @__PURE__ */ new Map();
+function getSession(sessionId) {
+  if (!sessions.has(sessionId)) {
+    sessions.set(sessionId, { usedIds: /* @__PURE__ */ new Set(), currentWord: null, wrongWords: /* @__PURE__ */ new Map() });
+  }
+  return sessions.get(sessionId);
+}
+router13.post("/next", async (req, res, next) => {
+  try {
+    const sessionId = req.userId || req.ip || "anonymous";
+    const body = req.body || {};
+    const domain = body.domain;
+    const difficulty = body.difficulty;
+    const session = getSession(sessionId);
+    let pool = dictationWords;
+    if (domain && domain !== "all") pool = pool.filter((w) => w.domain === domain);
+    if (difficulty) pool = pool.filter((w) => w.difficulty <= difficulty);
+    const unused = pool.filter((w) => !session.usedIds.has(w.id));
+    const available = unused.length > 0 ? unused : pool;
+    const word = available[Math.floor(Math.random() * available.length)];
+    session.usedIds.add(word.id);
+    session.currentWord = word;
+    ok(res, {
+      id: word.id,
+      word: word.word,
+      phonetic: word.phonetic,
+      chinese: word.chinese,
+      sentence: word.sentence,
+      difficulty: word.difficulty,
+      domain: word.domain,
+      progress: { used: session.usedIds.size, total: pool.length }
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+router13.post("/check", async (req, res, next) => {
+  try {
+    const sessionId = req.userId || req.ip || "anonymous";
+    const { answer } = req.body || {};
+    const session = getSession(sessionId);
+    const current = session.currentWord;
+    if (!current) {
+      fail(res, 400, "\u8BF7\u5148\u83B7\u53D6\u4E00\u4E2A\u5355\u8BCD");
+      return;
+    }
+    if (!answer?.trim()) {
+      fail(res, 400, "\u8BF7\u8F93\u5165\u7B54\u6848");
+      return;
+    }
+    const input = answer.trim().toLowerCase().replace(/[^a-z'-]/g, "");
+    const correct = current.word.toLowerCase().replace(/[^a-z'-]/g, "");
+    const isCorrect = input === correct;
+    const letters = [];
+    const maxLen = Math.max(input.length, correct.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (input[i] !== correct[i]) {
+        letters.push({ index: i, expected: correct[i] || " ", got: input[i] || " " });
+      }
+    }
+    if (!isCorrect) {
+      session.wrongWords.set(current.id, {
+        word: current,
+        wrongAnswer: answer,
+        count: (session.wrongWords.get(current.id)?.count || 0) + 1,
+        lastTime: (/* @__PURE__ */ new Date()).toISOString()
+      });
+    }
+    ok(res, { correct: isCorrect, word: current.word, letters, userAnswer: answer });
+  } catch (e) {
+    next(e);
+  }
+});
+router13.get("/words", async (_req, res) => {
+  const byDomain = {};
+  for (const w of dictationWords) byDomain[w.domain] = (byDomain[w.domain] || 0) + 1;
+  ok(res, { total: dictationWords.length, byDomain, domains: [...new Set(dictationWords.map((w) => w.domain))] });
+});
+router13.get("/wrong", async (req, res) => {
+  const session = getSession(req.userId || req.ip || "anonymous");
+  const words = Array.from(session.wrongWords.values()).map((w) => ({
+    id: w.word.id,
+    word: w.word.word,
+    chinese: w.word.chinese,
+    phonetic: w.word.phonetic,
+    wrongAnswer: w.wrongAnswer,
+    count: w.count,
+    lastTime: w.lastTime
+  }));
+  ok(res, words);
+});
+var dictation_default = router13;
+
 // src/init-db.ts
 var import_bcryptjs2 = __toESM(require("bcryptjs"), 1);
 async function tableExists(name) {
@@ -72604,9 +73030,9 @@ async function initializeDatabase() {
 }
 
 // src/index.ts
-var app = (0, import_express12.default)();
+var app = (0, import_express14.default)();
 app.use((0, import_cors.default)());
-app.use(import_express12.default.json({ limit: "5mb" }));
+app.use(import_express14.default.json({ limit: "5mb" }));
 app.use((req, res, next) => {
   const start = Date.now();
   res.on("finish", () => {
@@ -72627,6 +73053,8 @@ app.use("/exam", exam_default);
 app.use("/ai", ai_default);
 app.use("/insight", insight_default);
 app.use("/upload", upload_default);
+app.use("/tts", tts_default);
+app.use("/dictation", dictation_default);
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: (/* @__PURE__ */ new Date()).toISOString() });
 });

@@ -19,6 +19,8 @@ import WrongBookPage from './pages/exam/WrongBookPage';
 import ModelTrainPage from './pages/exam/ModelTrainPage';
 import AnimationDemo from './pages/AnimationDemo';
 import InsightPage from './pages/InsightPage';
+import SettingsPage from './pages/SettingsPage';
+import DictationPage from './pages/exam/DictationPage';
 
 export default function App() {
   return (
@@ -48,6 +50,8 @@ export default function App() {
           } />
           <Route path="/animation/demo" element={<AnimationDemo />} />
           <Route path="/insight" element={<InsightPage />} />
+          <Route path="/dictation" element={<DictationPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/admin" element={
             <ProtectedRoute requiredRole="admin">
               <AdminDashboard />

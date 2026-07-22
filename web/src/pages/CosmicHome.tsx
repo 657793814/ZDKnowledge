@@ -17,6 +17,7 @@ const C: Record<string, { main: string; glow: string; accent: string; highlight:
   politics: { main: '#9333ea', glow: 'rgba(147,51,234,0.6)', accent: '#d8b4fe', highlight: '#c084fc' },
   geo:      { main: '#16a34a', glow: 'rgba(22,163,74,0.6)', accent: '#86efac', highlight: '#4ade80' },
   cs:       { main: '#0ea5e9', glow: 'rgba(14,165,233,0.6)', accent: '#7dd3fc', highlight: '#38bdf8' },
+  chinese:  { main: '#ef4444', glow: 'rgba(239,68,68,0.6)', accent: '#fca5a5', highlight: '#f87171' },
 };
 
 /** 视口百分比布局 — 0=最左/最上, 100=最右/最下 */
@@ -36,6 +37,7 @@ const S: Record<SubjectKey, SC> = {
   chemistry:{ leftPct: 62, topPct: 32, ps: 52,  spin: 10 },
   history:  { leftPct: 32, topPct: 42, ps: 48,  spin: 13 },
   politics: { leftPct: 48, topPct: 66, ps: 56,  spin: 13 },
+  chinese:  { leftPct: 42, topPct: 20, ps: 54,  spin: 11 },
 };
 
 // ─── 3D 领域小卫星 ───
@@ -383,7 +385,7 @@ export default function CosmicHome() {
     return () => ro.disconnect();
   }, []);
 
-  const subs: SubjectKey[] = ['cs', 'math', 'geo', 'physics', 'chemistry', 'bio', 'eng', 'history', 'politics'];
+  const subs: SubjectKey[] = ['cs', 'math', 'geo', 'physics', 'chemistry', 'bio', 'eng', 'history', 'politics', 'chinese'];
 
   // 按 y 从大到小（底部优先渲染，顶部后置渲染 = 盖住底部）
   // 根据视口尺寸计算行星的像素位置和深度

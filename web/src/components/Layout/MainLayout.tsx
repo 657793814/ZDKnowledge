@@ -4,7 +4,7 @@ import { Layout, Menu, Input, Typography, Dropdown, Button, Space } from 'antd';
 import {
   BookOutlined, SearchOutlined, BarChartOutlined,
   EditOutlined, PieChartOutlined, DeleteOutlined,
-  PlayCircleOutlined, UserOutlined, LogoutOutlined,
+  PlayCircleOutlined, SoundOutlined, UserOutlined, LogoutOutlined,
   LoginOutlined, UserAddOutlined, SettingOutlined,
   BgColorsOutlined,
 } from '@ant-design/icons';
@@ -196,6 +196,12 @@ export default function MainLayout() {
                 label: '📈 学习统计',
                 onClick: () => navigate('/exam/stats'),
               },
+              ...(currentSubject === 'eng' ? [{
+                key: 'dictation',
+                icon: <SoundOutlined />,
+                label: '🎧 单词听写',
+                onClick: () => navigate('/dictation'),
+              }] : []),
               ...(isLoggedIn ? [{
                 key: 'wrongbook',
                 icon: <DeleteOutlined />,
@@ -221,6 +227,20 @@ export default function MainLayout() {
                 icon: <PlayCircleOutlined />,
                 label: '🎬 动画演示',
                 onClick: () => navigate('/animation/demo'),
+              },
+            ]}
+          />
+          <div style={{ borderTop: '1px solid var(--color-border)', margin: '8px 0' }} />
+          <Menu
+            mode="inline"
+            selectable={false}
+            style={{ background: 'transparent' }}
+            items={[
+              {
+                key: 'settings',
+                icon: <SettingOutlined />,
+                label: '⚙️ 设置',
+                onClick: () => navigate('/settings'),
               },
             ]}
           />

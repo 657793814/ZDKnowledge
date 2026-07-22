@@ -544,30 +544,64 @@ cd web && npm run tauri build
 
 ## 开发命令
 
+### 一键启动（前后端同时热更新）
+```bash
+cd web
+npm run dev:full
+```
+使用 `concurrently` 同时启动前端 Vite 服务器和后端 Express 服务，终端用颜色区分日志：
+- **青色** → 前端（Vite HMR）
+- **绿色** → 后端（tsx watch 自动重启）
+
+### 前后端热更新机制
+
+| 层 | 技术 | 热更新方式 |
+|---|---|---|
+| 前端 (React/Vite) | Vite HMR + React Refresh | 修改代码 → 浏览器/Webview **即时刷新**，保留组件状态 |
+| 后端 (Express) | `tsx watch` | 修改代码 → **自动重启**服务，无需手动 kill |
+
+**核心原理：**
+- 前端通过 Vite dev proxy（`/api` → `http://localhost:3001`）调用后端，**生产不需要 CORS**
+- 修改后端代码后 `tsx watch` 监听文件变更，自动重启 Express 进程
+- 前端和后端独立运行，互不影响
+
 ### 前端
 ```bash
 cd web
-npm run dev          # 开发模式
-npm run build        # 生产构建
-npm run lint         # 代码检查
-npm run tauri dev    # Tauri 开发
-npm run tauri build  # Tauri 打包
+npm run dev           # 仅前端开发服务器（需后端已启动）
+npm run dev:full      # 🔥 前端 + 后端一起启动（推荐）
+npm run build         # 生产构建
+npm run preview       # 预览生产构建
+npm run tauri dev     # Tauri 桌面版开发（含 Vite HMR）
+npm run tauri build   # Tauri 桌面版打包
 ```
 
 ### Node.js 后端
 ```bash
 cd node-server
-npm run dev          # 开发模式（自动重启）
-npm run build        # 生产构建
-npm run seed         # 数据种子
-npx prisma studio    # 数据库可视化
+npm run dev           # tsx watch 热重启开发模式
+npm run build         # 生产构建（tsc 编译）
+npm run start         # 生产运行
+npm run seed          # 数据种子写入
+npx prisma studio     # 数据库可视化（SQLite）
 ```
+
+### Tauri 桌面版开发说明
+
+`npm run tauri dev` 的工作方式：
+1. Tauri 自动执行 `beforeDevCommand` → 启动 **Vite 开发服务器**（端口 8082）
+2. Rust `setup()` 自动 fork **Node 后端子进程** → 后端随桌面应用启动
+3. Tauri Webview 加载 `http://localhost:8082` → **HMR 照常工作**
+4. 修改前端代码 → Webview 窗口即时更新（和浏览器 HMR 一致）
+5. 修改后端代码 → 需要关闭 `tauri dev` 后重新启动
+
+> 注意：`tauri dev` 已自带后端启动逻辑，无需额外运行 `npm run dev:full`。
 
 ### Java 后端
 ```bash
 cd server
-mvn spring-boot:run  # 开发模式
-mvn clean package    # 生产构建
+mvn spring-boot:run   # 开发模式
+mvn clean package     # 生产构建
 java -jar target/knowledge-power-1.0.0.jar  # 运行
 ```
 

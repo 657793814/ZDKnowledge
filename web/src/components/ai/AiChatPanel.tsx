@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { Card, Input, Button, Spin, Alert, Typography } from 'antd';
+import { Card, Input, Button, Spin, Alert, Typography, Space } from 'antd';
 import { SendOutlined, RobotOutlined, ReloadOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { aiAsk } from '@/api/ai';
 import { renderFormula } from '@/utils/renderFormula';
+import { stripHtml } from '@/utils/stripHtml';
+import { TTSButton } from '@/components';
 
 const { TextArea } = Input;
 
@@ -124,7 +126,8 @@ export default function AiChatPanel({ nodeId, nodeTitle, context }: Props) {
           <div key={i} style={{
             marginBottom: 10,
             display: 'flex',
-            justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start',
+            flexDirection: 'column',
+            alignItems: m.role === 'user' ? 'flex-end' : 'flex-start',
           }}>
             <div style={{
               maxWidth: '85%',
@@ -141,6 +144,11 @@ export default function AiChatPanel({ nodeId, nodeTitle, context }: Props) {
                 m.content
               )}
             </div>
+            {m.role === 'assistant' && (
+              <div style={{ marginTop: 2, marginLeft: 4 }}>
+                <TTSButton text={stripHtml(m.content)} size="small" />
+              </div>
+            )}
           </div>
         ))}
         {loading && (

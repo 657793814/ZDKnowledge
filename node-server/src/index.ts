@@ -17,6 +17,8 @@ import examRouter from './routes/exam.js';
 import aiRouter from './routes/ai.js';
 import insightRouter from './routes/insight.js';
 import uploadRouter from './routes/upload.js';
+import ttsRouter from './routes/tts.js';
+import dictationRouter from './routes/dictation.js';
 import prisma from './db.js';
 import { initializeDatabase } from './init-db.js';
 
@@ -52,6 +54,8 @@ app.use('/exam', examRouter);
 app.use('/ai', aiRouter);
 app.use('/insight', insightRouter);
 app.use('/upload', uploadRouter);
+app.use('/tts', ttsRouter);
+app.use('/dictation', dictationRouter);
 
 // 健康检查
 app.get('/health', (_req, res) => {

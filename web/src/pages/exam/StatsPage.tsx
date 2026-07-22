@@ -12,6 +12,8 @@ import { SUBJECT_LABELS, SUBJECT_EMOJI } from '@/types';
 import { DOMAIN_COLORS } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { useSubjectStore } from '@/store/subjectStore';
+import { stripHtml } from '@/utils/stripHtml';
+import { TTSButton } from '@/components';
 
 const { Panel } = Collapse;
 
@@ -383,7 +385,10 @@ export default function StatsPage() {
       {/* AI 学习建议 */}
       <Card style={{ borderRadius: 12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <span style={{ fontWeight: 600 }}>🤖 AI 学习建议</span>
+          <Space>
+            <span style={{ fontWeight: 600 }}>🤖 AI 学习建议</span>
+            {aiRecommendResult && <TTSButton text={stripHtml(aiRecommendResult)} size="small" />}
+          </Space>
           <Button
             type="primary"
             icon={<RobotOutlined />}

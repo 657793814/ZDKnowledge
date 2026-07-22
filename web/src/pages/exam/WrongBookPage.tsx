@@ -6,6 +6,8 @@ import type { WrongBookVO } from '@/types';
 import { DOMAIN_COLORS } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { renderFormula } from '@/utils/renderFormula';
+import { stripHtml } from '@/utils/stripHtml';
+import { TTSButton } from '@/components';
 
 export default function WrongBookPage() {
   const [data, setData] = useState<WrongBookVO[]>([]);
@@ -61,6 +63,7 @@ export default function WrongBookPage() {
             {data.map((item) => (
               <Card key={item.questionId} size="small" style={{ marginBottom: 8, borderLeft: '4px solid #F59E0B' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <TTSButton text={stripHtml([item.title, '正确答案：' + item.correctAnswer, item.explanation].filter(Boolean).join('。'))} size="small" />
                   <div style={{ flex: 1 }}>
                     <div style={{ marginBottom: 6 }}>
                       <Tag color={DOMAIN_COLORS[item.domain]}>{item.domain}</Tag>
