@@ -215,6 +215,21 @@ full_build() {
     check_node
     check_rust
 
+    # ---------- 清理 ----------
+    info "🧹 清理编译残留..."
+    if [ -d "$TAURI_DIR/target/debug" ]; then
+        rm -rf "$TAURI_DIR/target/debug"
+        info "  ✅ Debug 编译产物已清除"
+    fi
+    # 清理旧的临时 dmg 文件
+    find "$TAURI_DIR/target" -name "rw.*.dmg" -delete 2>/dev/null || true
+    find "$TAURI_DIR/target" -name ".tmp_*" -delete 2>/dev/null || true
+    # 清理过时的旧版 bundle（保留最新的一次，但清除可能存在的旧版命名残留）
+    if [ -d "$TAURI_DIR/target/release/bundle/dmg" ]; then
+        rm -f "$TAURI_DIR/target/release/bundle/dmg/知识动力_*.dmg" 2>/dev/null || true
+    fi
+    info "  ✅ 清理完成"
+
     build_backend
     build_frontend
     build_tauri
@@ -227,6 +242,10 @@ full_build() {
     info "  .app: $TAURI_DIR/target/release/bundle/macos/知识动力.app"
     info "  .dmg: $TAURI_DIR/target/release/bundle/dmg/知识动力.dmg"
     info "  后端: $SCRIPT_DIR/knowledgepower-backend.jar"
+    info ""
+    TARGET_SZ=$(du -sh "$TAURI_DIR/target/" 2>/dev/null | cut -f1)
+    info "编译缓存: src-tauri/target/ ($TARGET_SZ)"
+    info "清理缓存: rm -rf src-tauri/target/"
     echo ""
 }
 
